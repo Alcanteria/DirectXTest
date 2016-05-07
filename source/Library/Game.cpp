@@ -1,5 +1,6 @@
 #include "Game.h"
 #include "GameException.h"
+#include "DrawableGameComponent.h"
 
 namespace Library
 {
@@ -141,17 +142,34 @@ namespace Library
 
 	void Game::Initialize()
 	{
-
+		for (GameComponent* component : mComponents)
+		{
+			component->Initialize();
+		}
 	}
 
 	void Game::Update(const GameTime& gameTime)
 	{
-
+		for (GameComponent* component : mComponents)
+		{
+			if (component->Enabled())
+			{
+				component->Update(gameTime);
+			}
+		}
 	}
 
 	void Game::Draw(const GameTime& gameTime)
 	{
+		for (GameComponent* component : mComponents)
+		{
+			DrawableGameComponent* drawableGameComponent = component->As<DrawableGameComponent>();
 
+			if (drawableGameComponent != nullptr && drawableGameComponent->Visible())
+			{
+				drawableGameComponent->Draw(gameTime);
+			}
+		}
 	}
 
 	void Game::InitializeWindow()

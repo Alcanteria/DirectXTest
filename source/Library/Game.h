@@ -5,6 +5,7 @@
 #include "Common.h"
 #include "GameClock.h"
 #include "GameTime.h"
+#include "GameComponent.h"
 
 using namespace Library;
 
@@ -35,6 +36,8 @@ namespace Library
 		bool IsFullScreen() const;
 		const D3D11_TEXTURE2D_DESC& BackBufferDesc() const;
 		const D3D11_VIEWPORT& Viewport() const;
+
+		const std::vector<GameComponent*>& Components() const;
 
 	protected:
 		virtual void InitializeWindow();
@@ -74,6 +77,8 @@ namespace Library
 		ID3D11RenderTargetView* mRenderTargetView;
 		ID3D11DepthStencilView* mDepthStencilView;
 		D3D11_VIEWPORT mViewport;
+
+		std::vector<GameComponent*> mComponents;
 
 	private:
 		Game(const Game& rhs);

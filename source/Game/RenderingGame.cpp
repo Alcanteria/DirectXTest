@@ -1,6 +1,11 @@
 #include "stdafx.h"
 #include "RenderingGame.h"
+#include <sstream>
+#include <SpriteBatch.h>
+#include <SpriteFont.h>
 #include "..\Library\GameException.h"
+#include "..\Library\FpsComponent.h"
+#include "..\Library\Utility.h"
 
 namespace Rendering
 {
@@ -20,7 +25,16 @@ namespace Rendering
 
 	void RenderingGame::Initialize()
 	{
+		mFpsComponent = new FpsComponent(*this);
+		mComponents.push_back(mFpsComponent);
 		Game::Initialize();
+	}
+
+	void RenderingGame::Shutdown()
+	{
+		DeleteObject(mFpsComponent);
+
+		Game::Shutdown();
 	}
 
 	void RenderingGame::Update(const GameTime &gameTime)
