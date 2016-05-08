@@ -14,6 +14,8 @@ namespace DirectX
 namespace Library
 {
 	class FpsComponent;
+	class Keyboard;
+	class Mouse;
 }
 
 namespace Rendering
@@ -33,9 +35,13 @@ namespace Rendering
 
 	private:
 		static const XMVECTORF32 BackgroundColor;
+		LPDIRECTINPUT8 mDirectInput;
+		Keyboard* mKeyboard;
+		Mouse* mMouse;
 		FpsComponent* mFpsComponent;
 		SpriteBatch* mSpriteBatch;
 		SpriteFont* mSpriteFont;
+		XMFLOAT2 mMouseTextPosition;
 		
 	};
 }

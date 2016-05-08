@@ -108,6 +108,11 @@ namespace Library
 		return mViewport;
 	}
 
+	const ServiceContainer& Game::Services() const
+	{
+		return mServices;
+	}
+
 	void Game::Run()
 	{
 		InitializeWindow();

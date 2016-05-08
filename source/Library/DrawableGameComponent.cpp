@@ -8,9 +8,9 @@ namespace Library
 
 	DrawableGameComponent::DrawableGameComponent(Game& game) : GameComponent(game), mVisible(true), mCamera(nullptr)	{}
 
-	DrawableGameComponent::DrawableGameComponent(Game& game, Camera& camera) : GameComponent(game), mVisible(true), mCamera(&camera);
+	DrawableGameComponent::DrawableGameComponent(Game& game, Camera& camera) : GameComponent(game), mVisible(true), mCamera(&camera) {}
 
-	DrawableGameComponent::~~DrawableGameComponent() {}
+	DrawableGameComponent::~DrawableGameComponent() {}
 
 	bool DrawableGameComponent::Visible() const
 	{

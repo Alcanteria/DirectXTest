@@ -1,5 +1,9 @@
 #pragma once
 
+#ifdef DIRECTINPUT_VERSION
+#define DIRECTINPUT_VERSION 0x0800
+#endif
+
 #include <Windows.h>
 #include <exception>
 #include <cassert>
@@ -7,12 +11,12 @@
 #include <vector>
 #include <map>
 #include <memory>
-
+#include "RTTI.h"
 #include <d3d11_1.h>
 #include <DirectXMath.h>
 #include <DirectXPackedVector.h>
+#include <dinput.h>
 
-#include "RTTI.h"
 
 #define DeleteObject(object) if ((object) != NULL) {delete object; object = NULL;}
 #define DeleteObjects(objects) if ((objects) != NULL) {delete[] objects; objects = NULL;}

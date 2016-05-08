@@ -1,7 +1,7 @@
+#include <Shlwapi.h>
 #include "Utility.h"
 #include <algorithm>
 #include <exception>
-#include <Shlwapi.h>
 #include <fstream>
 
 namespace Library

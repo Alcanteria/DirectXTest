@@ -5,6 +5,11 @@ namespace Library
 
 	GameTime::GameTime() : mTotalGameTime(0.0), mElapsedGameTime(0.0) {}
 
+	double GameTime::TotalGameTime() const
+	{
+		return mTotalGameTime;
+	}
+
 	void GameTime::SetTotalGameTime(double totalGameTime)
 	{
 		mTotalGameTime = totalGameTime;
