@@ -95,7 +95,9 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColorHelper.cpp" />
     <ClCompile Include="DrawableGameComponent.cpp" />
+    <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClock.cpp" />
@@ -105,6 +107,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="MatrixHelper.cpp" />
     <ClCompile Include="Mouse.cpp" />
+    <ClCompile Include="RenderStateHelper.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -112,8 +115,10 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColorHelper.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="DrawableGameComponent.h" />
+    <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="FpsComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClock.h" />
@@ -123,6 +128,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MatrixHelper.h" />
     <ClInclude Include="Mouse.h" />
+    <ClInclude Include="RenderStateHelper.h" />
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="ServiceContainer.h" />
     <ClInclude Include="Utility.h" />

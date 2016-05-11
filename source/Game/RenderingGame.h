@@ -5,21 +5,19 @@
 
 using namespace Library;
 
-namespace DirectX
-{
-	class SpriteBatch;
-	class SpriteFont;
-}
-
 namespace Library
 {
 	class FpsComponent;
 	class Keyboard;
 	class Mouse;
+	class FirstPersonCamera;
+	class RenderStateHelper;
 }
 
 namespace Rendering
 {
+	class TriangleDemo;
+
 	class RenderingGame : public Game
 	{
 	public:
@@ -35,13 +33,14 @@ namespace Rendering
 
 	private:
 		static const XMVECTORF32 BackgroundColor;
+
 		LPDIRECTINPUT8 mDirectInput;
 		Keyboard* mKeyboard;
 		Mouse* mMouse;
+		FirstPersonCamera * mCamera;
 		FpsComponent* mFpsComponent;
-		SpriteBatch* mSpriteBatch;
-		SpriteFont* mSpriteFont;
-		XMFLOAT2 mMouseTextPosition;
+
+		TriangleDemo* mDemo;
 		
 	};
 }

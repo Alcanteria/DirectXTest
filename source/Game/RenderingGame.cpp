@@ -8,14 +8,17 @@
 #include "..\Library\Mouse.h"
 #include "..\Library\FpsComponent.h"
 #include "..\Library\Utility.h"
+#include "..\Library\ColorHelper.h"
+#include "TriangleDemo.h"
+#include "..\Library\FirstPersonCamera.h"
 #include <iostream>
 
 namespace Rendering
 {
-	const XMVECTORF32 RenderingGame::BackgroundColor = { 0.392f, 0.584f, 0.929f, 1.0f };
+	const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::CornflowerBlue;
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand) 
-		: Game(instance, windowClass, windowTitle, showCommand)
+		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mDemo(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultisamplingEnabled = true;
@@ -41,27 +44,28 @@ namespace Rendering
 		mComponents.push_back(mMouse);
 		mServices.AddService(Mouse::TypeIdClass(), mMouse);
 
+		mCamera = new FirstPersonCamera(*this);
+		mComponents.push_back(mCamera);
+		mServices.AddService(Camera::TypeIdClass(), mCamera);
+
 		mFpsComponent = new FpsComponent(*this);
 		mComponents.push_back(mFpsComponent);
 
-		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
-		std::cout << "Attempting to create sprite batch." << std::endl;
-		mSpriteBatch = new SpriteBatch(mDirect3DDeviceContext);
-		
-		
-		mSpriteFont = new SpriteFont(mDirect3DDevice, L"C:\\Users\\Nick\\Source\\Repos\\DirectXTest\\source\\Library\\Content\\Arial_14_Regular.spritefont");
-		std::cout << "Sprite font created." << std::endl;
+		mDemo = new TriangleDemo(*this, *mCamera);
+		mComponents.push_back(mDemo);
 
 		Game::Initialize();
+
+		mCamera->SetPosition(0.0f, 0.0f, 5.0f);
 	}
 
 	void RenderingGame::Shutdown()
 	{
+		DeleteObject(mDemo);
+		DeleteObject(mCamera);
 		DeleteObject(mFpsComponent);
 		DeleteObject(mKeyboard);
 		DeleteObject(mMouse);
-		DeleteObject(mSpriteFont);
-		DeleteObject(mSpriteBatch);
 
 		ReleaseObject(mDirectInput);
 
@@ -84,14 +88,6 @@ namespace Rendering
 		mDirect3DDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		Game::Draw(gameTime);
-
-		mSpriteBatch->Begin();
-
-		std::wostringstream mouseLabel;
-		mouseLabel << L"Mouse Position: " << mMouse->X() << ", " << mMouse->Y() << " Mouse Wheel: " << mMouse->Wheel();
-		mSpriteFont->DrawString(mSpriteBatch, mouseLabel.str().c_str(), mMouseTextPosition);
-
-		mSpriteBatch->End();
 
 		HRESULT hr = mSwapChain->Present(0, 0);
 

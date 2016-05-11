@@ -8,14 +8,96 @@ namespace Library
 {
 	RTTI_DEFINITIONS(Camera)
 
-	const float Camera::DefaultFieldOfView = XM_PIDIV4;
+		const float Camera::DefaultFieldOfView = XM_PIDIV4;
 	const float Camera::DefaultNearPlaneDistance = 0.01f;
 	const float Camera::DefaultFarPlaneDistance = 1000.0f;
 
-	Camera::Camera(Game& game) : GameComponent(game), mFieldOfView(DefaultFieldOfView), mAspectRatio(game.AspectRatio()), mNearPlaneDistance(DefaultNearPlaneDistance), mFarPlaneDistance(DefaultFarPlaneDistance),
+	Camera::Camera(Game& game)
+		: GameComponent(game),
+		mFieldOfView(DefaultFieldOfView), mAspectRatio(game.AspectRatio()), mNearPlaneDistance(DefaultNearPlaneDistance), mFarPlaneDistance(DefaultFarPlaneDistance),
 		mPosition(), mDirection(), mUp(), mRight(), mViewMatrix(), mProjectionMatrix()
 	{
+	}
 
+	Camera::Camera(Game& game, float fieldOfView, float aspectRatio, float nearPlaneDistance, float farPlaneDistance)
+		: GameComponent(game),
+		mFieldOfView(fieldOfView), mAspectRatio(aspectRatio), mNearPlaneDistance(nearPlaneDistance), mFarPlaneDistance(farPlaneDistance),
+		mPosition(), mDirection(), mUp(), mRight(), mViewMatrix(), mProjectionMatrix()
+	{
+	}
+
+	Camera::~Camera()
+	{
+	}
+
+	const XMFLOAT3& Camera::Position() const
+	{
+		return mPosition;
+	}
+
+	const XMFLOAT3& Camera::Direction() const
+	{
+		return mDirection;
+	}
+
+	const XMFLOAT3& Camera::Up() const
+	{
+		return mUp;
+	}
+
+	const XMFLOAT3& Camera::Right() const
+	{
+		return mRight;
+	}
+
+	XMVECTOR Camera::PositionVector() const
+	{
+		return XMLoadFloat3(&mPosition);
+	}
+
+	XMVECTOR Camera::DirectionVector() const
+	{
+		return XMLoadFloat3(&mDirection);
+	}
+
+	XMVECTOR Camera::UpVector() const
+	{
+		return XMLoadFloat3(&mUp);
+	}
+
+	XMVECTOR Camera::RightVector() const
+	{
+		return XMLoadFloat3(&mRight);
+	}
+
+	float Camera::AspectRatio() const
+	{
+		return mAspectRatio;
+	}
+
+	float Camera::FieldOfView() const
+	{
+		return mFieldOfView;
+	}
+
+	float Camera::NearPlaneDistance() const
+	{
+		return mNearPlaneDistance;
+	}
+
+	float Camera::FarPlaneDistance() const
+	{
+		return mFarPlaneDistance;
+	}
+
+	XMMATRIX Camera::ViewMatrix() const
+	{
+		return XMLoadFloat4x4(&mViewMatrix);
+	}
+
+	XMMATRIX Camera::ProjectionMatrix() const
+	{
+		return XMLoadFloat4x4(&mProjectionMatrix);
 	}
 
 	XMMATRIX Camera::ViewProjectionMatrix() const
@@ -84,7 +166,10 @@ namespace Library
 		XMVECTOR direction = XMLoadFloat3(&mDirection);
 		XMVECTOR up = XMLoadFloat3(&mUp);
 
-		direction = XMVector3TransformNormal(up, transform);
+		direction = XMVector3TransformNormal(direction, transform);
+		direction = XMVector3Normalize(direction);
+
+		up = XMVector3TransformNormal(up, transform);
 		up = XMVector3Normalize(up);
 
 		XMVECTOR right = XMVector3Cross(direction, up);
