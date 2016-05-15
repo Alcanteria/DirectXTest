@@ -16,7 +16,8 @@ namespace Library
 
 namespace Rendering
 {
-	class TriangleDemo;
+	//class TriangleDemo;
+	class CubeDemo;
 
 	class RenderingGame : public Game
 	{
@@ -39,8 +40,10 @@ namespace Rendering
 		Mouse* mMouse;
 		FirstPersonCamera * mCamera;
 		FpsComponent* mFpsComponent;
+		RenderStateHelper* mRenderStateHelper;
 
-		TriangleDemo* mDemo;
+		//TriangleDemo* mDemo;
+		CubeDemo* mDemo;
 		
 	};
 }
