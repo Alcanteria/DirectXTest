@@ -16,9 +16,7 @@ namespace Library
 
 namespace Rendering
 {
-	//class TriangleDemo;
-	//class CubeDemo;
-	class ModelDemo;
+	class TextureModelDemo;
 
 	class RenderingGame : public Game
 	{
@@ -43,9 +41,7 @@ namespace Rendering
 		FpsComponent* mFpsComponent;
 		RenderStateHelper* mRenderStateHelper;
 
-		//TriangleDemo* mDemo;
-		//CubeDemo* mDemo;
-		ModelDemo* mDemo;
+		TextureModelDemo* mDemo;
 		
 	};
 }

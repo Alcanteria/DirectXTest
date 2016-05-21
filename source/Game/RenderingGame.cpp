@@ -10,7 +10,7 @@
 #include "..\Library\Utility.h"
 #include "..\Library\ColorHelper.h"
 #include "..\Library\RenderStateHelper.h"
-#include "ModelDemo.h"
+#include "TextureModelDemo.h"
 #include "..\Library\FirstPersonCamera.h"
 #include <iostream>
 
@@ -53,8 +53,7 @@ namespace Rendering
 		mFpsComponent->Initialize();
 		//mComponents.push_back(mFpsComponent);
 
-		//mDemo = new TriangleDemo(*this, *mCamera);
-		mDemo = new ModelDemo(*this, *mCamera);
+		mDemo = new TextureModelDemo(*this, *mCamera);
 		mComponents.push_back(mDemo);
 
 		mRenderStateHelper = new RenderStateHelper(*this);

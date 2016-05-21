@@ -46,7 +46,6 @@ namespace Rendering
 
 		ID3D10Blob* compiledShader = nullptr;
 		ID3D10Blob* errorMessages = nullptr;
-		//HRESULT hr = D3DCompileFromFile(L"C:\\Users\\Nick\\Source\\Repos\\DirectXTest\\source\\Library\\Content\\BasicEffect.fx", nullptr, nullptr, nullptr, "fx_5_0", shaderFlags, 0, &compiledShader, &errorMessages);
 		HRESULT hr = D3DCompileFromFile(L"..\\source\\Library\\Content\\BasicEffect.fx", nullptr, nullptr, nullptr, "fx_5_0", shaderFlags, 0, &compiledShader, &errorMessages);
 		if (FAILED(hr))
 		{
