@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -98,6 +99,7 @@
   <ItemGroup>
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="stdafx.cpp">

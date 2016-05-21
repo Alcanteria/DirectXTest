@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include <random>
 
 namespace Library
 {
@@ -19,7 +20,13 @@ namespace Library
 		static const XMVECTORF32 Wheat;
 		static const XMVECTORF32 LightGray;
 
+		static XMFLOAT4 RandomColor();
+
 	private:
+		static std::random_device sDevice;
+		static std::default_random_engine sGenerator;
+		static std::uniform_real_distribution<float> sDistribution;
+
 		ColorHelper();
 		ColorHelper(const ColorHelper& rhs);
 		ColorHelper& operator=(const ColorHelper& rhs);

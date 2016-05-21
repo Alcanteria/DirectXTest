@@ -1,25 +1,27 @@
 #include "stdafx.h"
-#include "CubeDemo.h"
-#include "..\Library\Game.h"
-#include "..\Library\GameException.h"
-#include "..\Library\MatrixHelper.h"
-#include "..\Library\ColorHelper.h"
-#include "..\Library\Camera.h"
-#include "..\Library\Utility.h"
+#include "ModelDemo.h"
+#include "..\..\DirectXTest\source\Library\Game.h"
+#include "..\..\DirectXTest\source\Library\GameException.h"
+#include "..\..\DirectXTest\source\Library\MatrixHelper.h"
+#include "..\..\DirectXTest\source\Library\ColorHelper.h"
+#include "..\..\DirectXTest\source\Library\Camera.h"
+#include "..\..\DirectXTest\source\Library\Utility.h"
+#include "..\..\DirectXTest\source\Library\Model.h"
+#include "..\..\DirectXTest\source\Library\Mesh.h"
 #include "D3DCompiler.h"
 
 namespace Rendering
 {
-	RTTI_DEFINITIONS(CubeDemo)
+	RTTI_DEFINITIONS(ModelDemo)
 
-		CubeDemo::CubeDemo(Game& game, Camera& camera)
+		ModelDemo::ModelDemo(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera),
 		mEffect(nullptr), mTechnique(nullptr), mPass(nullptr), mWvpVariable(nullptr),
-		mInputLayout(nullptr), mWorldMatrix(MatrixHelper::Identity), mVertexBuffer(nullptr), mIndexBuffer(nullptr)
+		mInputLayout(nullptr), mWorldMatrix(MatrixHelper::Identity), mVertexBuffer(nullptr), mIndexBuffer(nullptr), mIndexCount(0)
 	{
 	}
 
-	CubeDemo::~CubeDemo()
+	ModelDemo::~ModelDemo()
 	{
 		ReleaseObject(mWvpVariable);
 		ReleaseObject(mPass);
@@ -30,7 +32,7 @@ namespace Rendering
 		ReleaseObject(mIndexBuffer);
 	}
 
-	void CubeDemo::Initialize()
+	void ModelDemo::Initialize()
 	{
 		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
 
@@ -44,7 +46,8 @@ namespace Rendering
 
 		ID3D10Blob* compiledShader = nullptr;
 		ID3D10Blob* errorMessages = nullptr;
-		HRESULT hr = D3DCompileFromFile(L"C:\\Users\\Nick\\Source\\Repos\\DirectXTest\\source\\Library\\Content\\BasicEffect.fx", nullptr, nullptr, nullptr, "fx_5_0", shaderFlags, 0, &compiledShader, &errorMessages);
+		//HRESULT hr = D3DCompileFromFile(L"C:\\Users\\Nick\\Source\\Repos\\DirectXTest\\source\\Library\\Content\\BasicEffect.fx", nullptr, nullptr, nullptr, "fx_5_0", shaderFlags, 0, &compiledShader, &errorMessages);
+		HRESULT hr = D3DCompileFromFile(L"..\\source\\Library\\Content\\BasicEffect.fx", nullptr, nullptr, nullptr, "fx_5_0", shaderFlags, 0, &compiledShader, &errorMessages);
 		if (FAILED(hr))
 		{
 			char* errorMessage = (errorMessages != nullptr ? (char*)errorMessages->GetBufferPointer() : "D3DX11CompileFromFile() failed");
@@ -103,78 +106,17 @@ namespace Rendering
 			throw GameException("ID3D11Device::CreateInputLayout() failed.", hr);
 		}
 
+		// Load the model
+		std::unique_ptr<Model> model(new Model(*mGame, "..\\source\\Library\\Content\\Models\\Sphere.obj", true));
+
 		// Create the vertex and index buffers
-		BasicEffectVertex vertices[] =
-		{
-			BasicEffectVertex(XMFLOAT4(-1.0f, +1.0f, -1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Green))),
-			BasicEffectVertex(XMFLOAT4(+1.0f, +1.0f, -1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Yellow))),
-			BasicEffectVertex(XMFLOAT4(+1.0f, +1.0f, +1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::White))),
-			BasicEffectVertex(XMFLOAT4(-1.0f, +1.0f, +1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::BlueGreen))),
-
-			BasicEffectVertex(XMFLOAT4(-1.0f, -1.0f, +1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Blue))),
-			BasicEffectVertex(XMFLOAT4(+1.0f, -1.0f, +1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Purple))),
-			BasicEffectVertex(XMFLOAT4(+1.0f, -1.0f, -1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Red))),
-			BasicEffectVertex(XMFLOAT4(-1.0f, -1.0f, -1.0f, 1.0f), XMFLOAT4(reinterpret_cast<const float*>(&ColorHelper::Black)))
-		};
-
-		D3D11_BUFFER_DESC vertexBufferDesc;
-		ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
-		vertexBufferDesc.ByteWidth = sizeof(BasicEffectVertex) * ARRAYSIZE(vertices);
-		vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-
-		D3D11_SUBRESOURCE_DATA vertexSubResourceData;
-		ZeroMemory(&vertexSubResourceData, sizeof(vertexSubResourceData));
-		vertexSubResourceData.pSysMem = vertices;
-		if (FAILED(mGame->Direct3DDevice()->CreateBuffer(&vertexBufferDesc, &vertexSubResourceData, &mVertexBuffer)))
-		{
-			throw GameException("ID3D11Device::CreateBuffer() failed.");
-		}
-
-		UINT indices[] =
-		{
-			0, 1, 2,
-			0, 2, 3,
-
-			4, 5, 6,
-			4, 6, 7,
-
-			3, 2, 5,
-			3, 5, 4,
-
-			2, 1, 6,
-			2, 6, 5,
-
-			1, 7, 6,
-			1, 0, 7,
-
-			0, 3, 4,
-			0, 4, 7
-		};
-
-		D3D11_BUFFER_DESC indexBufferDesc;
-		ZeroMemory(&indexBufferDesc, sizeof(indexBufferDesc));
-		indexBufferDesc.ByteWidth = sizeof(UINT) * ARRAYSIZE(indices);
-		indexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
-		indexBufferDesc.BindFlags = D3D11_BIND_INDEX_BUFFER;
-
-		D3D11_SUBRESOURCE_DATA indexSubResourceData;
-		ZeroMemory(&indexSubResourceData, sizeof(indexSubResourceData));
-		indexSubResourceData.pSysMem = indices;
-		if (FAILED(mGame->Direct3DDevice()->CreateBuffer(&indexBufferDesc, &indexSubResourceData, &mIndexBuffer)))
-		{
-			throw GameException("ID3D11Device::CreateBuffer() failed.");
-		}
+		Mesh* mesh = model->Meshes().at(0);
+		CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);
+		mesh->CreateIndexBuffer(&mIndexBuffer);
+		mIndexCount = mesh->Indices().size();
 	}
 
-	void CubeDemo::Update(const GameTime& gameTime)
-	{
-		mScale += .01f;
-
-		XMStoreFloat4x4(&mWorldMatrix, XMMatrixScaling(mScale, mScale, mScale));
-	}
-
-	void CubeDemo::Draw(const GameTime& gameTime)
+	void ModelDemo::Draw(const GameTime& gameTime)
 	{
 		ID3D11DeviceContext* direct3DDeviceContext = mGame->Direct3DDeviceContext();
 		direct3DDeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
@@ -191,6 +133,49 @@ namespace Rendering
 
 		mPass->Apply(0, direct3DDeviceContext);
 
-		direct3DDeviceContext->DrawIndexed(36, 0, 0);
+		direct3DDeviceContext->DrawIndexed(mIndexCount, 0, 0);
+	}
+
+	void ModelDemo::CreateVertexBuffer(ID3D11Device* device, const Mesh& mesh, ID3D11Buffer** vertexBuffer) const
+	{
+		const std::vector<XMFLOAT3>& sourceVertices = mesh.Vertices();
+
+		std::vector<BasicEffectVertex> vertices;
+		vertices.reserve(sourceVertices.size());
+		if (mesh.VertexColors().size() > 0)
+		{
+			std::vector<XMFLOAT4>* vertexColors = mesh.VertexColors().at(0);
+			assert(vertexColors->size() == sourceVertices.size());
+
+			for (UINT i = 0; i < sourceVertices.size(); i++)
+			{
+				XMFLOAT3 position = sourceVertices.at(i);
+				XMFLOAT4 color = vertexColors->at(i);
+				vertices.push_back(BasicEffectVertex(XMFLOAT4(position.x, position.y, position.z, 1.0f), color));
+			}
+		}
+		else
+		{
+			for (UINT i = 0; i < sourceVertices.size(); i++)
+			{
+				XMFLOAT3 position = sourceVertices.at(i);
+				XMFLOAT4 color = ColorHelper::RandomColor();
+				vertices.push_back(BasicEffectVertex(XMFLOAT4(position.x, position.y, position.z, 1.0f), color));
+			}
+		}
+
+		D3D11_BUFFER_DESC vertexBufferDesc;
+		ZeroMemory(&vertexBufferDesc, sizeof(vertexBufferDesc));
+		vertexBufferDesc.ByteWidth = sizeof(BasicEffectVertex) * vertices.size();
+		vertexBufferDesc.Usage = D3D11_USAGE_IMMUTABLE;
+		vertexBufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+
+		D3D11_SUBRESOURCE_DATA vertexSubResourceData;
+		ZeroMemory(&vertexSubResourceData, sizeof(vertexSubResourceData));
+		vertexSubResourceData.pSysMem = &vertices[0];
+		if (FAILED(device->CreateBuffer(&vertexBufferDesc, &vertexSubResourceData, vertexBuffer)))
+		{
+			throw GameException("ID3D11Device::CreateBuffer() failed.");
+		}
 	}
 }

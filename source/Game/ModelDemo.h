@@ -1,27 +1,26 @@
 #pragma once
 
-#include "..\Library\DrawableGameComponent.h"
+#include "..\..\DirectXTest\source\Library\DrawableGameComponent.h"
 #include "d3dx11effect.h"
 
 using namespace Library;
 
 namespace Library
 {
-	class Keyboard;
+	class Mesh;
 }
 
 namespace Rendering
 {
-	class CubeDemo : public DrawableGameComponent
+	class ModelDemo : public DrawableGameComponent
 	{
-		RTTI_DECLARATIONS(CubeDemo, DrawableGameComponent)
+		RTTI_DECLARATIONS(ModelDemo, DrawableGameComponent)
 
 	public:
-		CubeDemo(Game& game, Camera& camera);
-		~CubeDemo();
+		ModelDemo(Game& game, Camera& camera);
+		~ModelDemo();
 
 		virtual void Initialize() override;
-		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
 	private:
@@ -36,9 +35,11 @@ namespace Rendering
 				: Position(position), Color(color) { }
 		} BasicEffectVertex;
 
-		CubeDemo();
-		CubeDemo(const CubeDemo& rhs);
-		CubeDemo& operator=(const CubeDemo& rhs);
+		ModelDemo();
+		ModelDemo(const ModelDemo& rhs);
+		ModelDemo& operator=(const ModelDemo& rhs);
+
+		void CreateVertexBuffer(ID3D11Device* device, const Mesh& mesh, ID3D11Buffer** vertexBuffer) const;
 
 		ID3DX11Effect* mEffect;
 		ID3DX11EffectTechnique* mTechnique;
@@ -48,8 +49,8 @@ namespace Rendering
 		ID3D11InputLayout* mInputLayout;
 		ID3D11Buffer* mVertexBuffer;
 		ID3D11Buffer* mIndexBuffer;
+		UINT mIndexCount;
 
 		XMFLOAT4X4 mWorldMatrix;
-		float mScale;
 	};
 }
