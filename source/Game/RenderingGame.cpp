@@ -10,16 +10,17 @@
 #include "..\Library\Utility.h"
 #include "..\Library\ColorHelper.h"
 #include "..\Library\RenderStateHelper.h"
-#include "TextureModelDemo.h"
+#include "MaterialDemo.h"
 #include "..\Library\FirstPersonCamera.h"
 #include <iostream>
+#include "..\Library\Skybox.h"
 
 namespace Rendering
 {
 	const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::CornflowerBlue;
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand) 
-		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mDemo(nullptr)
+		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mDemo(nullptr), mSkybox(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultisamplingEnabled = true;
@@ -53,19 +54,23 @@ namespace Rendering
 		mFpsComponent->Initialize();
 		//mComponents.push_back(mFpsComponent);
 
-		mDemo = new TextureModelDemo(*this, *mCamera);
+		mDemo = new MaterialDemo(*this, *mCamera);
 		mComponents.push_back(mDemo);
+
+		mSkybox = new Skybox(*this, *mCamera, L"..\\source\\Library\\Content\\Textures\\BaconTextureCube.dds", 100.0f);
+		mComponents.push_back(mSkybox);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
 		Game::Initialize();
 
-		mCamera->SetPosition(0.0f, 0.0f, 10.0f);
+		mCamera->SetPosition(0.0f, 0.0f, 25.0f);
 	}
 
 	void RenderingGame::Shutdown()
 	{
 		DeleteObject(mDemo);
+		DeleteObject(mSkybox);
 		DeleteObject(mCamera);
 		DeleteObject(mFpsComponent);
 		DeleteObject(mKeyboard);

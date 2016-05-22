@@ -61,6 +61,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>d3d11.lib;DirectXTK.lib;d3dcompiler.lib;Effects11.lib;dinput8.lib;dxguid.lib;Library.lib;ShLwApi.Lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\Nick\Downloads\Effects11\Bin\Desktop_2013\Win32\Debug;C:\Users\Nick\Downloads\DirectXTK\Bin\Desktop_2013\Win32\Debug;C:\Users\Nick\Source\Repos\DirectXTest\Debug;C:\Users\Nick\Source\Repos\DirectXTest\packages\directxtk_desktop_2013.2016.2.23.1\build\native\lib\Win32\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -89,6 +90,7 @@
   <ItemGroup>
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MaterialDemo.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="Resource.h" />
@@ -100,6 +102,7 @@
   <ItemGroup>
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="MaterialDemo.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />

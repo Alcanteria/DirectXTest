@@ -1,7 +1,7 @@
-#include <Shlwapi.h>
 #include "Utility.h"
 #include <algorithm>
 #include <exception>
+#include <Shlwapi.h>
 #include <fstream>
 
 namespace Library
@@ -11,6 +11,7 @@ namespace Library
 		WCHAR buffer[MAX_PATH];
 		GetCurrentDirectory(MAX_PATH, buffer);
 		std::wstring currentDirectoryW(buffer);
+
 		return std::string(currentDirectoryW.begin(), currentDirectoryW.end());
 	}
 
@@ -19,6 +20,7 @@ namespace Library
 		WCHAR buffer[MAX_PATH];
 		GetModuleFileName(nullptr, buffer, MAX_PATH);
 		PathRemoveFileSpec(buffer);
+
 		return std::wstring(buffer);
 	}
 
@@ -26,7 +28,9 @@ namespace Library
 	{
 		std::string fullPath(inputPath);
 		std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
+
 		std::string::size_type lastSlashIndex = fullPath.find_last_of('/');
+
 		if (lastSlashIndex == std::string::npos)
 		{
 			filename = fullPath;
@@ -36,12 +40,14 @@ namespace Library
 			filename = fullPath.substr(lastSlashIndex + 1, fullPath.size() - lastSlashIndex - 1);
 		}
 	}
-	
+
 	void Utility::GetDirectory(const std::string& inputPath, std::string& directory)
 	{
 		std::string fullPath(inputPath);
 		std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
+
 		std::string::size_type lastSlashIndex = fullPath.find_last_of('/');
+
 		if (lastSlashIndex == std::string::npos)
 		{
 			directory = "";
@@ -52,11 +58,11 @@ namespace Library
 		}
 	}
 
-
 	void Utility::GetFileNameAndDirectory(const std::string& inputPath, std::string& directory, std::string& filename)
 	{
 		std::string fullPath(inputPath);
 		std::replace(fullPath.begin(), fullPath.end(), '\\', '/');
+
 		std::string::size_type lastSlashIndex = fullPath.find_last_of('/');
 
 		if (lastSlashIndex == std::string::npos)
@@ -74,7 +80,6 @@ namespace Library
 	void Utility::LoadBinaryFile(const std::wstring& filename, std::vector<char>& data)
 	{
 		std::ifstream file(filename.c_str(), std::ios::binary);
-
 		if (file.bad())
 		{
 			throw std::exception("Could not open file.");
@@ -109,6 +114,7 @@ namespace Library
 	void Utility::PathJoin(std::wstring& dest, const std::wstring& sourceDirectory, const std::wstring& sourceFile)
 	{
 		WCHAR buffer[MAX_PATH];
+
 		PathCombine(buffer, sourceDirectory.c_str(), sourceFile.c_str());
 		dest = buffer;
 	}

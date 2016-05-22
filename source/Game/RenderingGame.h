@@ -12,11 +12,13 @@ namespace Library
 	class Mouse;
 	class FirstPersonCamera;
 	class RenderStateHelper;
+	class MaterialDemo;
+	class Skybox;
 }
 
 namespace Rendering
 {
-	class TextureModelDemo;
+	class MaterialDemo;
 
 	class RenderingGame : public Game
 	{
@@ -40,8 +42,7 @@ namespace Rendering
 		FirstPersonCamera * mCamera;
 		FpsComponent* mFpsComponent;
 		RenderStateHelper* mRenderStateHelper;
-
-		TextureModelDemo* mDemo;
-		
+		MaterialDemo* mDemo;
+		Skybox* mSkybox;		
 	};
 }
