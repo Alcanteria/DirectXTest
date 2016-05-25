@@ -7,18 +7,17 @@ using namespace Library;
 
 namespace Library
 {
-	class FpsComponent;
 	class Keyboard;
 	class Mouse;
 	class FirstPersonCamera;
+	class FpsComponent;
 	class RenderStateHelper;
-	class MaterialDemo;
-	class Skybox;
+	class Grid;
 }
 
 namespace Rendering
 {
-	class MaterialDemo;
+	class DiffuseLightingDemo;
 
 	class RenderingGame : public Game
 	{
@@ -39,10 +38,11 @@ namespace Rendering
 		LPDIRECTINPUT8 mDirectInput;
 		Keyboard* mKeyboard;
 		Mouse* mMouse;
-		FirstPersonCamera * mCamera;
+		FirstPersonCamera* mCamera;
 		FpsComponent* mFpsComponent;
 		RenderStateHelper* mRenderStateHelper;
-		MaterialDemo* mDemo;
-		Skybox* mSkybox;		
+		Grid* mGrid;
+
+		DiffuseLightingDemo* mDiffuseLightingDemo;
 	};
 }

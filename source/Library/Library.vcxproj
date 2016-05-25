@@ -120,6 +120,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorHelper.cpp" />
+    <ClCompile Include="DiffuseLightingMaterial.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="DrawableGameComponent.cpp" />
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
@@ -129,7 +131,9 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameException.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MatrixHelper.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -137,7 +141,10 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="ModelMaterial.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
+    <ClCompile Include="ProxyModel.cpp" />
+    <ClCompile Include="RasterizerStates.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
+    <ClCompile Include="SamplerStates.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SkyboxMaterial.cpp" />
@@ -153,6 +160,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorHelper.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DiffuseLightingMaterial.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="DrawableGameComponent.h" />
     <ClInclude Include="Effect.h" />
     <ClInclude Include="FirstPersonCamera.h" />
@@ -162,7 +171,9 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameException.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MatrixHelper.h" />
     <ClInclude Include="Mesh.h" />
@@ -170,8 +181,11 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="ModelMaterial.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
+    <ClInclude Include="ProxyModel.h" />
+    <ClInclude Include="RasterizerStates.h" />
     <ClInclude Include="RenderStateHelper.h" />
     <ClInclude Include="RTTI.h" />
+    <ClInclude Include="SamplerStates.h" />
     <ClInclude Include="ServiceContainer.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SkyboxMaterial.h" />
@@ -187,6 +201,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="Content\BasicEffect.fx" />
     <FxCompile Include="Content\Skybox.fx" />
     <FxCompile Include="Content\TextureMapping.fx" />

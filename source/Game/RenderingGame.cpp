@@ -10,6 +10,10 @@
 #include "..\Library\Utility.h"
 #include "..\Library\ColorHelper.h"
 #include "..\Library\RenderStateHelper.h"
+#include "..\Library\RasterizerStates.h"
+#include "..\Library\Grid.h"
+#include "..\Library\SamplerStates.h"
+#include "DiffuseLightingDemo.h"
 #include "MaterialDemo.h"
 #include "..\Library\FirstPersonCamera.h"
 #include <iostream>
@@ -20,7 +24,7 @@ namespace Rendering
 	const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::CornflowerBlue;
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand) 
-		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mDemo(nullptr), mSkybox(nullptr)
+		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mGrid(nullptr), mDiffuseLightingDemo(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultisamplingEnabled = true;
@@ -54,11 +58,15 @@ namespace Rendering
 		mFpsComponent->Initialize();
 		//mComponents.push_back(mFpsComponent);
 
-		mDemo = new MaterialDemo(*this, *mCamera);
-		mComponents.push_back(mDemo);
+		mGrid = new Grid(*this, *mCamera);
+		mComponents.push_back(mGrid);
 
-		mSkybox = new Skybox(*this, *mCamera, L"..\\source\\Library\\Content\\Textures\\BaconTextureCube.dds", 100.0f);
-		mComponents.push_back(mSkybox);
+		RasterizerStates::Initialize(mDirect3DDevice);
+		SamplerStates::BorderColor = ColorHelper::Black;
+		SamplerStates::Initialize(mDirect3DDevice);
+
+		mDiffuseLightingDemo = new DiffuseLightingDemo(*this, *mCamera);
+		mComponents.push_back(mDiffuseLightingDemo);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
@@ -69,15 +77,17 @@ namespace Rendering
 
 	void RenderingGame::Shutdown()
 	{
-		DeleteObject(mDemo);
-		DeleteObject(mSkybox);
-		DeleteObject(mCamera);
-		DeleteObject(mFpsComponent);
+		DeleteObject(mDiffuseLightingDemo);
+		DeleteObject(mGrid)
+		DeleteObject(mRenderStateHelper);
 		DeleteObject(mKeyboard);
 		DeleteObject(mMouse);
-		DeleteObject(mRenderStateHelper);
+		DeleteObject(mFpsComponent);
+		DeleteObject(mCamera);
 
 		ReleaseObject(mDirectInput);
+		RasterizerStates::Release();
+		SamplerStates::Release();
 
 		Game::Shutdown();
 	}
