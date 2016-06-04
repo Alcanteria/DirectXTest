@@ -151,6 +151,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SkyboxMaterial.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
+    <ClCompile Include="SpotLightMaterial.cpp" />
     <ClCompile Include="Technique.cpp" />
     <ClCompile Include="TextureMaterial.cpp" />
     <ClCompile Include="Utility.cpp" />
@@ -193,6 +195,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="ServiceContainer.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SkyboxMaterial.h" />
+    <ClInclude Include="SpotLight.h" />
+    <ClInclude Include="SpotLightMaterial.h" />
     <ClInclude Include="Technique.h" />
     <ClInclude Include="TextureMaterial.h" />
     <ClInclude Include="Utility.h" />
@@ -205,6 +209,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\..\..\..\Downloads\DirectXBookReDownload\pvarcholik-real-time-3d-rendering-with-directx-and-hlsl-45f0eb8e850c\Chapter7\Visual Studio\source\SpotLightDemo\content\Effects\SpotLight.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />
     <FxCompile Include="Content\BasicEffect.fx" />

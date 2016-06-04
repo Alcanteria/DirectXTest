@@ -10,7 +10,7 @@ namespace Library
 {
 	RTTI_DEFINITIONS(FpsComponent)
 
-	FpsComponent::FpsComponent(Game& game) : DrawableGameComponent(game), mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 60.0f), mFrameCount(0), mFrameRate(0), mLastTotalElapsedTime(0.0) {}
+	FpsComponent::FpsComponent(Game& game) : DrawableGameComponent(game), mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 1.0f), mFrameCount(0), mFrameRate(0), mLastTotalElapsedTime(0.0) {}
 
 	FpsComponent::~FpsComponent()
 	{

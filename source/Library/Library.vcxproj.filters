@@ -135,6 +135,12 @@
     <ClCompile Include="PointLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLightMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameException.h">
@@ -257,6 +263,12 @@
     <ClInclude Include="PointLight.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLightMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Arial_14_Regular.spritefont" />
@@ -267,5 +279,6 @@
     <FxCompile Include="Content\TextureMapping.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />
+    <FxCompile Include="..\..\..\..\..\Downloads\DirectXBookReDownload\pvarcholik-real-time-3d-rendering-with-directx-and-hlsl-45f0eb8e850c\Chapter7\Visual Studio\source\SpotLightDemo\content\Effects\SpotLight.fx" />
   </ItemGroup>
 </Project>

@@ -17,14 +17,14 @@
 #include "..\Library\FirstPersonCamera.h"
 #include <iostream>
 #include "..\Library\Skybox.h"
-#include "PointLightDemo.h"
+#include "SpotLightDemo.h"
 
 namespace Rendering
 {
 	const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::CornflowerBlue;
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand) 
-		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mGrid(nullptr), mPointLightDemo(nullptr)
+		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mGrid(nullptr), mSpotLightDemo(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultisamplingEnabled = true;
@@ -65,8 +65,8 @@ namespace Rendering
 		SamplerStates::BorderColor = ColorHelper::Black;
 		SamplerStates::Initialize(mDirect3DDevice);
 
-		mPointLightDemo = new PointLightDemo(*this, *mCamera);
-		mComponents.push_back(mPointLightDemo);
+		mSpotLightDemo = new SpotLightDemo(*this, *mCamera);
+		mComponents.push_back(mSpotLightDemo);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
@@ -77,7 +77,7 @@ namespace Rendering
 
 	void RenderingGame::Shutdown()
 	{
-		DeleteObject(mPointLightDemo);
+		DeleteObject(mSpotLightDemo);
 		DeleteObject(mGrid)
 		DeleteObject(mRenderStateHelper);
 		DeleteObject(mKeyboard);
