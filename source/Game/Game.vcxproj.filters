@@ -51,6 +51,9 @@
     <ClInclude Include="DiffuseLightingDemo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PointLightDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,6 +84,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DiffuseLightingDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLightDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

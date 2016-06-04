@@ -93,6 +93,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="MaterialDemo.h" />
     <ClInclude Include="ModelDemo.h" />
+    <ClInclude Include="PointLightDemo.h" />
     <ClInclude Include="RenderingGame.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="MaterialDemo.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
+    <ClCompile Include="PointLightDemo.cpp" />
     <ClCompile Include="Program.cpp" />
     <ClCompile Include="RenderingGame.cpp" />
     <ClCompile Include="stdafx.cpp">

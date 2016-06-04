@@ -141,6 +141,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="ModelMaterial.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Pass.cpp" />
+    <ClCompile Include="PointLight.cpp" />
+    <ClCompile Include="PointLightMaterial.cpp" />
     <ClCompile Include="ProxyModel.cpp" />
     <ClCompile Include="RasterizerStates.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
@@ -181,6 +183,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="ModelMaterial.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Pass.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="PointLightMaterial.h" />
     <ClInclude Include="ProxyModel.h" />
     <ClInclude Include="RasterizerStates.h" />
     <ClInclude Include="RenderStateHelper.h" />
@@ -202,6 +206,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
+    <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />
     <FxCompile Include="Content\BasicEffect.fx" />
     <FxCompile Include="Content\Skybox.fx" />
     <FxCompile Include="Content\TextureMapping.fx" />

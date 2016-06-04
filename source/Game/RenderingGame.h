@@ -17,7 +17,7 @@ namespace Library
 
 namespace Rendering
 {
-	class DiffuseLightingDemo;
+	class PointLightDemo;
 
 	class RenderingGame : public Game
 	{
@@ -43,6 +43,6 @@ namespace Rendering
 		RenderStateHelper* mRenderStateHelper;
 		Grid* mGrid;
 
-		DiffuseLightingDemo* mDiffuseLightingDemo;
+		PointLightDemo* mPointLightDemo;
 	};
 }

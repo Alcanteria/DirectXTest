@@ -24,9 +24,9 @@ namespace Rendering
 	RTTI_DEFINITIONS(DiffuseLightingDemo)
 
 	//const float DiffuseLightingDemo::LightModulationRate = UCHAR_MAX;
-	const float DiffuseLightingDemo::LightModulationRate = 10;
+	const float DiffuseLightingDemo::LightModulationRate = .1f;
 	//const XMFLOAT2 DiffuseLightingDemo::LightRotationRate = XMFLOAT2(XM_2PI, XM_2PI);
-	const XMFLOAT2 DiffuseLightingDemo::LightRotationRate = XMFLOAT2(.01f, .01f);
+	const XMFLOAT2 DiffuseLightingDemo::LightRotationRate = XMFLOAT2(.005f, .005f);
 
 	DiffuseLightingDemo::DiffuseLightingDemo(Game& game, Camera& camera)
 		: DrawableGameComponent(game, camera), mEffect(nullptr), mMaterial(nullptr), mTextureShaderResourceView(nullptr),
@@ -153,7 +153,7 @@ namespace Rendering
 		// Update directional light intensity		
 		if (mKeyboard->IsKeyDown(DIK_HOME) && directionalIntensity < UCHAR_MAX)
 		{
-			directionalIntensity += LightModulationRate;
+			directionalIntensity += LightModulationRate * elapsedTime;
 
 			XMCOLOR directionalLightColor = mDirectionalLight->Color();
 			directionalLightColor.a = (UCHAR)XMMin<float>(directionalIntensity, UCHAR_MAX);
@@ -161,7 +161,7 @@ namespace Rendering
 		}
 		if (mKeyboard->IsKeyDown(DIK_END) && directionalIntensity > 0)
 		{
-			directionalIntensity -= LightModulationRate;
+			directionalIntensity -= LightModulationRate * elapsedTime;
 
 			XMCOLOR directionalLightColor = mDirectionalLight->Color();
 			directionalLightColor.a = (UCHAR)XMMax<float>(directionalIntensity, 0.0f);
@@ -172,23 +172,23 @@ namespace Rendering
 		XMFLOAT2 rotationAmount = Vector2Helper::Zero;
 		if (mKeyboard->IsKeyDown(DIK_LEFTARROW))
 		{
-			//rotationAmount.x += LightRotationRate.x * elapsedTime;
-			rotationAmount.x += LightRotationRate.x;
+			rotationAmount.x += LightRotationRate.x * elapsedTime;
+			//rotationAmount.x += LightRotationRate.x;
 		}
 		if (mKeyboard->IsKeyDown(DIK_RIGHTARROW))
 		{
-			//rotationAmount.x -= LightRotationRate.x * elapsedTime;
-			rotationAmount.x -= LightRotationRate.x;
+			rotationAmount.x -= LightRotationRate.x * elapsedTime;
+			//rotationAmount.x -= LightRotationRate.x;
 		}
 		if (mKeyboard->IsKeyDown(DIK_UPARROW))
 		{
-			//rotationAmount.y += LightRotationRate.y * elapsedTime;
-			rotationAmount.y += LightRotationRate.y;
+			rotationAmount.y += LightRotationRate.y * elapsedTime;
+			//rotationAmount.y += LightRotationRate.y;
 		}
 		if (mKeyboard->IsKeyDown(DIK_DOWNARROW))
 		{
-			//rotationAmount.y -= LightRotationRate.y * elapsedTime;
-			rotationAmount.y -= LightRotationRate.y;
+			rotationAmount.y -= LightRotationRate.y * elapsedTime;
+			//rotationAmount.y -= LightRotationRate.y;
 		}
 
 		XMMATRIX lightRotationMatrix = XMMatrixIdentity();
@@ -219,12 +219,14 @@ namespace Rendering
 			if (mKeyboard->IsKeyDown(DIK_PGUP) && ambientIntensity < UCHAR_MAX)
 			{
 				ambientIntensity += LightModulationRate * (float)gameTime.ElapsedGameTime();
+				//ambientIntensity += LightModulationRate;
 				mAmbientColor.a = (UCHAR)XMMin<float>(ambientIntensity, UCHAR_MAX);
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_PGDN) && ambientIntensity > 0)
 			{
 				ambientIntensity -= LightModulationRate * (float)gameTime.ElapsedGameTime();
+				//ambientIntensity -= LightModulationRate;
 				mAmbientColor.a = (UCHAR)XMMax<float>(ambientIntensity, 0);
 			}
 		}
