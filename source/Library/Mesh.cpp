@@ -1,82 +1,87 @@
 #include "Mesh.h"
 #include "Model.h"
+#include "Material.h"
 #include "Game.h"
 #include "GameException.h"
 #include "scene.h"
 
 namespace Library
 {
-	Mesh::Mesh(Model& model, aiMesh& mesh)
-		: mModel(model), mMaterial(nullptr), mName(mesh.mName.C_Str()), mVertices(), mNormals(), mTangents(), mBiNormals(), mTextureCoordinates(), mVertexColors(), mFaceCount(0), mIndices()
+	Mesh::Mesh(Model& model, ModelMaterial* material)
+		: mModel(model), mMaterial(material), mName(), mVertices(), mNormals(), mTangents(), mBiNormals(), mTextureCoordinates(), mVertexColors(), mFaceCount(0), mIndices(),
+		mVertexBuffer(), mIndexBuffer()
 	{
-		mMaterial = mModel.Materials().at(mesh.mMaterialIndex);
+	}
 
+	Mesh::Mesh(Model& model, ModelMaterial* material, aiMesh* mesh)
+		: mModel(model), mMaterial(material), mName(mesh->mName.C_Str()), mVertices(), mNormals(), mTangents(), mBiNormals(), mTextureCoordinates(), mVertexColors(), mFaceCount(0), mIndices()
+	{
 		// Vertices
-		mVertices.reserve(mesh.mNumVertices);
-		for (UINT i = 0; i < mesh.mNumVertices; i++)
+		mVertices.reserve(mesh->mNumVertices);
+		for (UINT i = 0; i < mesh->mNumVertices; i++)
 		{
-			mVertices.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh.mVertices[i])));
+			mVertices.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh->mVertices[i])));
 		}
 
 		// Normals
-		if (mesh.HasNormals())
+		if (mesh->HasNormals())
 		{
-			mNormals.reserve(mesh.mNumVertices);
-			for (UINT i = 0; i < mesh.mNumVertices; i++)
+			mNormals.reserve(mesh->mNumVertices);
+			for (UINT i = 0; i < mesh->mNumVertices; i++)
 			{
-				mNormals.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh.mNormals[i])));
+				mNormals.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh->mNormals[i])));
 			}
 		}
 
 		// Tangents and Binormals
-		if (mesh.HasTangentsAndBitangents())
+		if (mesh->HasTangentsAndBitangents())
 		{
-			mTangents.reserve(mesh.mNumVertices);
-			mBiNormals.reserve(mesh.mNumVertices);
-			for (UINT i = 0; i < mesh.mNumVertices; i++)
+			mTangents.reserve(mesh->mNumVertices);
+			mBiNormals.reserve(mesh->mNumVertices);
+			for (UINT i = 0; i < mesh->mNumVertices; i++)
 			{
-				mTangents.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh.mTangents[i])));
-				mBiNormals.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh.mBitangents[i])));
+				mTangents.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh->mTangents[i])));
+				mBiNormals.push_back(XMFLOAT3(reinterpret_cast<const float*>(&mesh->mBitangents[i])));
 			}
 		}
 
 		// Texture Coordinates
-		UINT uvChannelCount = mesh.GetNumUVChannels();
+		UINT uvChannelCount = mesh->GetNumUVChannels();
 		for (UINT i = 0; i < uvChannelCount; i++)
 		{
 			std::vector<XMFLOAT3>* textureCoordinates = new std::vector<XMFLOAT3>();
-			textureCoordinates->reserve(mesh.mNumVertices);
+			textureCoordinates->reserve(mesh->mNumVertices);
 			mTextureCoordinates.push_back(textureCoordinates);
 
-			aiVector3D* aiTextureCoordinates = mesh.mTextureCoords[i];
-			for (UINT j = 0; j < mesh.mNumVertices; j++)
+			aiVector3D* aiTextureCoordinates = mesh->mTextureCoords[i];
+			for (UINT j = 0; j < mesh->mNumVertices; j++)
 			{
 				textureCoordinates->push_back(XMFLOAT3(reinterpret_cast<const float*>(&aiTextureCoordinates[j])));
 			}
 		}
 
 		// Vertex Colors
-		UINT colorChannelCount = mesh.GetNumColorChannels();
+		UINT colorChannelCount = mesh->GetNumColorChannels();
 		for (UINT i = 0; i < colorChannelCount; i++)
 		{
 			std::vector<XMFLOAT4>* vertexColors = new std::vector<XMFLOAT4>();
-			vertexColors->reserve(mesh.mNumVertices);
+			vertexColors->reserve(mesh->mNumVertices);
 			mVertexColors.push_back(vertexColors);
 
-			aiColor4D* aiVertexColors = mesh.mColors[i];
-			for (UINT j = 0; j < mesh.mNumVertices; j++)
+			aiColor4D* aiVertexColors = mesh->mColors[i];
+			for (UINT j = 0; j < mesh->mNumVertices; j++)
 			{
 				vertexColors->push_back(XMFLOAT4(reinterpret_cast<const float*>(&aiVertexColors[j])));
 			}
 		}
 
 		// Faces (note: could pre-reserve if we limit primitive types)
-		if (mesh.HasFaces())
+		if (mesh->HasFaces())
 		{
-			mFaceCount = mesh.mNumFaces;
+			mFaceCount = mesh->mNumFaces;
 			for (UINT i = 0; i < mFaceCount; i++)
 			{
-				aiFace* face = &mesh.mFaces[i];
+				aiFace* face = &mesh->mFaces[i];
 
 				for (UINT j = 0; j < face->mNumIndices; j++)
 				{
@@ -97,6 +102,9 @@ namespace Library
 		{
 			delete vertexColors;
 		}
+
+		mVertexBuffer.ReleaseBuffer();
+		mIndexBuffer.ReleaseBuffer();
 	}
 
 	Model& Mesh::GetModel()
@@ -154,6 +162,30 @@ namespace Library
 		return mIndices;
 	}
 
+	BufferContainer& Mesh::VertexBuffer()
+	{
+		return mVertexBuffer;
+	}
+
+	BufferContainer& Mesh::IndexBuffer()
+	{
+		return mIndexBuffer;
+	}
+
+	bool Mesh::HasCachedVertexBuffer() const
+	{
+		Mesh* mesh = const_cast<Mesh*>(this);
+
+		return mesh->mVertexBuffer.Buffer() != nullptr;
+	}
+
+	bool Mesh::HasCachedIndexBuffer() const
+	{
+		Mesh* mesh = const_cast<Mesh*>(this);
+
+		return mesh->mIndexBuffer.Buffer() != nullptr;
+	}
+
 	void Mesh::CreateIndexBuffer(ID3D11Buffer** indexBuffer)
 	{
 		assert(indexBuffer != nullptr);
@@ -171,5 +203,21 @@ namespace Library
 		{
 			throw GameException("ID3D11Device::CreateBuffer() failed.");
 		}
+	}
+
+	void Mesh::CreateCachedVertexAndIndexBuffers(ID3D11Device& device, const Material& material)
+	{
+		mVertexBuffer.ReleaseBuffer();
+		mIndexBuffer.ReleaseBuffer();
+
+		ID3D11Buffer* buffer = nullptr;
+		material.CreateVertexBuffer(&device, *this, &buffer);
+		mVertexBuffer.SetBuffer(buffer);
+		mVertexBuffer.SetElementCount(mVertices.size());
+
+		buffer = nullptr;
+		CreateIndexBuffer(&buffer);
+		mIndexBuffer.SetBuffer(buffer);
+		mIndexBuffer.SetElementCount(mIndices.size());
 	}
 }

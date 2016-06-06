@@ -4,6 +4,8 @@
 #include "RenderingGame.h"
 #include "GaussianBlurGame.h"
 #include "BloomGame.h"
+#include "DistortionMappingGame.h"
+#include "DistortionMappingPostGame.h"
 
 
 #if defined(DEBUG) || defined(_DEBUG)
@@ -23,7 +25,8 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 
 	//std::unique_ptr<RenderingGame>game(new RenderingGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
 	//std::unique_ptr<GaussianBlurGame>game(new GaussianBlurGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
-	std::unique_ptr<BloomGame>game(new BloomGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
+	//std::unique_ptr<DistortionMappingGame>game(new DistortionMappingGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
+	std::unique_ptr<DistortionMappingPostGame>game(new DistortionMappingPostGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
 
 	try
 	{

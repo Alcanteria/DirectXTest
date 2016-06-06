@@ -63,6 +63,12 @@
     <ClInclude Include="BloomGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="DistortionMappingGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DistortionMappingPostGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -105,6 +111,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BloomGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistortionMappingGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DistortionMappingPostGame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

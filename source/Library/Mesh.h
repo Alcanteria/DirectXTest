@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Common.h"
+#include "BufferContainer.h"
 
 struct aiMesh;
 
@@ -30,10 +31,17 @@ namespace Library
 		UINT FaceCount() const;
 		const std::vector<UINT>& Indices() const;
 
+		BufferContainer& VertexBuffer();
+		BufferContainer& IndexBuffer();
+
+		bool HasCachedVertexBuffer() const;
+		bool HasCachedIndexBuffer() const;
+
 		void CreateIndexBuffer(ID3D11Buffer** indexBuffer);
+		void CreateCachedVertexAndIndexBuffers(ID3D11Device& device, const Material& material);
 
 	private:
-		Mesh(Model& model, aiMesh& mesh);
+		Mesh(Model& model, ModelMaterial* material, aiMesh* mesh);
 		Mesh(const Mesh& rhs);
 		Mesh& operator=(const Mesh& rhs);
 
@@ -48,5 +56,8 @@ namespace Library
 		std::vector<std::vector<XMFLOAT4>*> mVertexColors;
 		UINT mFaceCount;
 		std::vector<UINT> mIndices;
+
+		BufferContainer mVertexBuffer;
+		BufferContainer mIndexBuffer;
 	};
 }

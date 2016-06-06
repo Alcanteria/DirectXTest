@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "Game.h"
 #include "GameException.h"
-#include"Mesh.h"
+#include "Mesh.h"
 #include "ModelMaterial.h"
 #include "Importer.hpp"
 #include "scene.h"
@@ -40,7 +40,7 @@ namespace Library
 			{
 				ModelMaterial* material = (mMaterials.size() > i ? mMaterials.at(i) : nullptr);
 
-				Mesh* mesh = new Mesh(*this, *(scene->mMeshes[i]));
+				Mesh* mesh = new Mesh(*this, material, scene->mMeshes[i]);
 				mMeshes.push_back(mesh);
 			}
 		}

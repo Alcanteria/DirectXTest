@@ -91,6 +91,8 @@
     <ClInclude Include="BloomGame.h" />
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="DiffuseLightingDemo.h" />
+    <ClInclude Include="DistortionMappingGame.h" />
+    <ClInclude Include="DistortionMappingPostGame.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GaussianBlurGame.h" />
     <ClInclude Include="MaterialDemo.h" />
@@ -108,6 +110,8 @@
     <ClCompile Include="BloomGame.cpp" />
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="DiffuseLightingDemo.cpp" />
+    <ClCompile Include="DistortionMappingGame.cpp" />
+    <ClCompile Include="DistortionMappingPostGame.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GaussianBlurGame.cpp" />
     <ClCompile Include="MaterialDemo.cpp" />
