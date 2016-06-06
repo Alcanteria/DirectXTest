@@ -22,10 +22,28 @@ namespace Library
 	class Effect;
 }
 
+namespace DirectX
+{
+	class SpriteBatch;
+	class SpriteFont;
+}
+
 namespace Rendering
 {
 	class SpotLightDemo;
 	class ColorFilterMaterial;
+
+	enum ColorFilter
+	{
+		ColorFilterGrayScale = 0,
+		ColorFilterInverse,
+		ColorFilterSepia,
+		ColorFilterGeneric,
+		ColorFilterEnd
+	};
+
+	const std::string ColorFilterTechniqueNames[] = { "grayscale_filter", "inverse_filter", "sepia_filter", "generic_filter" };
+	const std::string ColorFilterDisplayNames[] = { "Grayscale", "Inverse", "Sepia", "Generic" };
 
 	class RenderingGame : public Game
 	{
@@ -39,6 +57,7 @@ namespace Rendering
 
 		/* POST PROCESSING STUFF. */
 		void UpdateColorFilterMaterial();
+		void UpdateGenericColorFilter(const GameTime& gameTime);
 		/* POST PROCESSING STUFF. */
 
 	protected:
@@ -58,11 +77,18 @@ namespace Rendering
 		SpotLightDemo* mSpotLightDemo;
 		Skybox* mSkyBox;
 
+		SpriteBatch* mSpriteBatch;
+		SpriteFont* mSpriteFont;
+		XMFLOAT2 mTextPosition;
+
 		/* POST PROCESSING STUFF. */
 		FullScreenRenderTarget* mRenderTarget;
 		FullScreenQuad* mFullScreenQuad;
 		Effect* mColorFilterEffect;
 		ColorFilterMaterial* mColorFilterMaterial;
+
+		ColorFilter mActiveColorFilter;
+		XMFLOAT4X4 mGenericColorFilter;
 		/* POST PROCESSING STUFF. */
 	};
 }

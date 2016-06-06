@@ -18,6 +18,7 @@
 #include <iostream>
 #include "..\Library\Skybox.h"
 #include "SpotLightDemo.h"
+#include "..\Library\MatrixHelper.h"
 
 namespace Rendering
 {
@@ -25,7 +26,8 @@ namespace Rendering
 
 	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
 		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mGrid(nullptr), mSpotLightDemo(nullptr),
-		mRenderTarget(nullptr), mFullScreenQuad(nullptr), mColorFilterEffect(nullptr), mColorFilterMaterial(nullptr), mSkyBox(nullptr)
+		mRenderTarget(nullptr), mFullScreenQuad(nullptr), mColorFilterEffect(nullptr), mColorFilterMaterial(nullptr), mSkyBox(nullptr), mActiveColorFilter(ColorFilterGrayScale), mGenericColorFilter(MatrixHelper::Identity),
+		mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 16.0f)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultisamplingEnabled = true;
@@ -43,6 +45,8 @@ namespace Rendering
 			throw GameException("DirectInput8Create() failed");
 		}
 
+		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
+
 		mKeyboard = new Keyboard(*this, mDirectInput);
 		mComponents.push_back(mKeyboard);
 		mServices.AddService(Keyboard::TypeIdClass(), mKeyboard);
@@ -50,6 +54,9 @@ namespace Rendering
 		mMouse = new Mouse(*this, mDirectInput);
 		mComponents.push_back(mMouse);
 		mServices.AddService(Mouse::TypeIdClass(), mMouse);
+
+		mSpriteBatch = new SpriteBatch(this->Direct3DDeviceContext());
+		mSpriteFont = new SpriteFont(this->Direct3DDevice(), L"..\\source\\Library\\Content\\Arial_14_Regular.spritefont");
 
 		mCamera = new FirstPersonCamera(*this);
 		mComponents.push_back(mCamera);
@@ -85,7 +92,9 @@ namespace Rendering
 
 		mFullScreenQuad = new FullScreenQuad(*this, *mColorFilterMaterial);
 		mFullScreenQuad->Initialize();
-		mFullScreenQuad->SetActiveTechnique("grayscale_filter", "p0");
+		//mFullScreenQuad->SetActiveTechnique("grayscale_filter", "p0");
+		//mFullScreenQuad->SetActiveTechnique("inverse_filter", "p0");
+		mFullScreenQuad->SetActiveTechnique(ColorFilterTechniqueNames[mActiveColorFilter], "p0");
 		mFullScreenQuad->SetCustomUpdateMaterial(std::bind(&RenderingGame::UpdateColorFilterMaterial, this));
 		/* POST PROCESSING STUFF */
 
@@ -105,6 +114,8 @@ namespace Rendering
 		DeleteObject(mColorFilterMaterial);
 		/* POST PROCESSING STUFF */
 
+		DeleteObject(mSpriteBatch)
+		DeleteObject(mSpriteFont)
 		DeleteObject(mGrid)
 		DeleteObject(mSkyBox)
 		DeleteObject(mRenderStateHelper);
@@ -129,6 +140,19 @@ namespace Rendering
 			Exit();
 		}
 
+		if (mKeyboard->WasKeyPressedThisFrame(DIK_RETURN))
+		{
+			mActiveColorFilter = ColorFilter(mActiveColorFilter + 1);
+			if (mActiveColorFilter >= ColorFilterEnd)
+			{
+				mActiveColorFilter = (ColorFilter)(0);
+			}
+
+			mFullScreenQuad->SetActiveTechnique(ColorFilterTechniqueNames[mActiveColorFilter], "p0");
+		}
+
+		UpdateGenericColorFilter(gameTime);
+
 		Game::Update(gameTime);
 	}
 
@@ -150,6 +174,28 @@ namespace Rendering
 		mDirect3DDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		mFullScreenQuad->Draw(gameTime);
+
+		mRenderStateHelper->SaveAll();
+
+		mSpriteBatch->Begin();
+
+		std::wostringstream helpLabel;
+		helpLabel << L"Ambient Intensity (+PgUp/-PgDn): " << mSpotLightDemo->GetAmbientColor().a << "\n";
+		helpLabel << L"Point Light Intensity (+Home/-End): " << mSpotLightDemo->GetSpotLightColor().a << "\n";
+		helpLabel << L"Specular Power (+Insert/-Delete): " << mSpotLightDemo->GetSpecularColor().a << "\n";
+		helpLabel << L"Move Point Light (8/2, 4/6, 3/9)\n";
+		//helpLabel << std::setprecision(2) << L"Active Filter (Enter): " << ColorFilterDisplayNames[mActiveColorFilter].c_str();
+		helpLabel << L"Active Filter (Enter): " << ColorFilterDisplayNames[mActiveColorFilter].c_str();
+		if (mActiveColorFilter == ColorFilterGeneric)
+		{
+			helpLabel << L"\nBrightness (+Comma/-Period): " << mGenericColorFilter._11 << "\n";
+		}
+
+		mSpriteFont->DrawString(mSpriteBatch, helpLabel.str().c_str(), mTextPosition);
+
+		mSpriteBatch->End();
+
+		mRenderStateHelper->RestoreAll();
 
 		HRESULT hr = mSwapChain->Present(0, 0);
 
@@ -180,6 +226,32 @@ namespace Rendering
 
 	void RenderingGame::UpdateColorFilterMaterial()
 	{
+		XMMATRIX colorFilter = XMLoadFloat4x4(&mGenericColorFilter);
+
 		mColorFilterMaterial->ColorTexture() << mRenderTarget->OutputTexture();
+		mColorFilterMaterial->ColorFilter() << colorFilter;
+	}
+
+	void RenderingGame::UpdateGenericColorFilter(const GameTime& gameTime)
+	{
+		static float brightness = 1.0f;
+		static float BrightnessModulationRate = 0.5f;
+
+		if (mKeyboard != nullptr)
+		{
+			if (mKeyboard->IsKeyDown(DIK_COMMA) && brightness < 1.0f)
+			{
+				brightness += BrightnessModulationRate * (float)gameTime.ElapsedGameTime();
+				brightness = XMMin<float>(brightness, 1.0f);
+				XMStoreFloat4x4(&mGenericColorFilter, XMMatrixScaling(brightness, brightness, brightness));
+			}
+
+			if (mKeyboard->IsKeyDown(DIK_PERIOD) && brightness > 0.0f)
+			{
+				brightness -= BrightnessModulationRate * (float)gameTime.ElapsedGameTime();
+				brightness = XMMax<float>(brightness, 0.0f);
+				XMStoreFloat4x4(&mGenericColorFilter, XMMatrixScaling(brightness, brightness, brightness));
+			}
+		}
 	}
 }
