@@ -265,4 +265,19 @@ namespace Rendering
 			}
 		}
 	}
+
+	const XMCOLOR& PointLightDemo::GetAmbientColor() const
+	{
+		return mAmbientColor;
+	}
+
+	const PointLight& PointLightDemo::GetPointLight() const
+	{
+		return *mPointLight;
+	}
+
+	float PointLightDemo::GetSpecularPower() const
+	{
+		return mSpecularPower;
+	}
 }

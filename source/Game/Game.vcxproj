@@ -91,6 +91,7 @@
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="DiffuseLightingDemo.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GaussianBlurGame.h" />
     <ClInclude Include="MaterialDemo.h" />
     <ClInclude Include="ModelDemo.h" />
     <ClInclude Include="PointLightDemo.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="DiffuseLightingDemo.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GaussianBlurGame.cpp" />
     <ClCompile Include="MaterialDemo.cpp" />
     <ClCompile Include="ModelDemo.cpp" />
     <ClCompile Include="PointLightDemo.cpp" />

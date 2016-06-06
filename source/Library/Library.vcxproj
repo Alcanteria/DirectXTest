@@ -134,6 +134,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="GameComponent.cpp" />
     <ClCompile Include="GameException.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="GaussianBlur.cpp" />
+    <ClCompile Include="GaussianBlurMaterial.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -182,6 +184,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="GameComponent.h" />
     <ClInclude Include="GameException.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="GaussianBlur.h" />
+    <ClInclude Include="GaussianBlurMaterial.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="Light.h" />
@@ -222,6 +226,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\ColorFilteringDemo\content\Effects\ColorFilter.fx" />
+    <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\Library\content\Effects\GaussianBlur.fx" />
     <FxCompile Include="Content\BasicEffect.fx" />
     <FxCompile Include="Content\Skybox.fx" />
     <FxCompile Include="Content\TextureMapping.fx" />

@@ -35,6 +35,10 @@ namespace Rendering
 		virtual void Update(const GameTime& gameTime) override;
 		virtual void Draw(const GameTime& gameTime) override;
 
+		const XMCOLOR& GetAmbientColor() const;
+		const PointLight& GetPointLight() const;
+		float GetSpecularPower() const;
+
 	private:
 		PointLightDemo();
 		PointLightDemo(const PointLightDemo& rhs);
