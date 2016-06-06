@@ -159,6 +159,12 @@
     <ClCompile Include="GaussianBlur.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BloomMaterial.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Bloom.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameException.h">
@@ -308,6 +314,12 @@
     <ClInclude Include="GaussianBlur.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BloomMaterial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Bloom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Arial_14_Regular.spritefont" />
@@ -321,5 +333,6 @@
     <FxCompile Include="..\..\..\..\..\Downloads\DirectXBookReDownload\pvarcholik-real-time-3d-rendering-with-directx-and-hlsl-45f0eb8e850c\Chapter7\Visual Studio\source\SpotLightDemo\content\Effects\SpotLight.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\ColorFilteringDemo\content\Effects\ColorFilter.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\Library\content\Effects\GaussianBlur.fx" />
+    <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\Library\content\Effects\Bloom.fx" />
   </ItemGroup>
 </Project>

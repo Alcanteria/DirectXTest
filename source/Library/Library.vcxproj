@@ -118,6 +118,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BasicMaterial.cpp" />
+    <ClCompile Include="Bloom.cpp" />
+    <ClCompile Include="BloomMaterial.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorFilterMaterial.cpp" />
     <ClCompile Include="ColorHelper.cpp" />
@@ -167,6 +169,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BasicMaterial.h" />
+    <ClInclude Include="Bloom.h" />
+    <ClInclude Include="BloomMaterial.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorFilterMaterial.h" />
     <ClInclude Include="ColorHelper.h" />
@@ -226,6 +230,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\ColorFilteringDemo\content\Effects\ColorFilter.fx" />
+    <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\Library\content\Effects\Bloom.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\Library\content\Effects\GaussianBlur.fx" />
     <FxCompile Include="Content\BasicEffect.fx" />
     <FxCompile Include="Content\Skybox.fx" />
