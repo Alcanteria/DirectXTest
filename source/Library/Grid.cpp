@@ -115,7 +115,7 @@ namespace Library
 		gridEffect->SetEffect(basicEffect);
 
 		mMaterial = new BasicMaterial();
-		mMaterial->Initialize(gridEffect);
+		mMaterial->Initialize(*gridEffect);
 
 		InitializeGrid();
 	}

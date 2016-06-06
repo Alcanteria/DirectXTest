@@ -20,10 +20,10 @@ namespace Library
 		Variable* operator[](const std::string& variableName);
 		Effect* GetEffect() const;
 		Technique* CurrentTechnique() const;
-		void SetCurrentTechnique(Technique* currentTechnique);
+		void SetCurrentTechnique(Technique& currentTechnique);
 		const std::map<Pass*, ID3D11InputLayout*>& InputLayouts() const;
 
-		virtual void Initialize(Effect* effect);
+		virtual void Initialize(Effect& effect);
 		virtual void CreateVertexBuffer(ID3D11Device* device, const Model& model, std::vector<ID3D11Buffer*>& vertexBuffers) const;
 		virtual void CreateVertexBuffer(ID3D11Device* device, const Mesh& mesh, ID3D11Buffer** vertexBuffer) const = 0;
 		virtual UINT VertexSize() const = 0;
@@ -33,6 +33,7 @@ namespace Library
 		Material& operator=(const Material& rhs);
 
 		virtual void CreateInputLayout(const std::string& techniqueName, const std::string& passName, D3D11_INPUT_ELEMENT_DESC* inputElementDescriptions, UINT inputElementDescriptionCount);
+		virtual void Material::CreateInputLayout(Pass& pass, D3D11_INPUT_ELEMENT_DESC* inputElementDescriptions, UINT inputElementDescriptionCount);
 
 		Effect* mEffect;
 		Technique* mCurrentTechnique;

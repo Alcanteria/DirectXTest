@@ -41,7 +41,7 @@ namespace Library
 		mEffect->LoadCompiledEffect(L"Content\\Effects\\Skybox.cso");
 
 		mMaterial = new SkyboxMaterial();
-		mMaterial->Initialize(mEffect);
+		mMaterial->Initialize(*mEffect);
 
 		Mesh* mesh = model->Meshes().at(0);
 		mMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);

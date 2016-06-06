@@ -41,7 +41,7 @@ namespace Rendering
 		mBasicEffect = new Effect(*mGame);
 		mBasicEffect->LoadCompiledEffect(L"Content\\Effects\\BasicEffect.cso");
 		mBasicMaterial = new BasicMaterial();
-		mBasicMaterial->Initialize(mBasicEffect);
+		mBasicMaterial->Initialize(*mBasicEffect);
 
 		//mBasicEffect = new Effect(*mGame);
 		//mBasicEffect->LoadCompiledEffect(L"Content\\Effects\\TextureMapping.cso");

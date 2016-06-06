@@ -15,7 +15,7 @@ namespace Library
 
 	MATERIAL_VARIABLE_DEFINITION(BasicMaterial, WorldViewProjection)
 
-	void BasicMaterial::Initialize(Effect* effect)
+	void BasicMaterial::Initialize(Effect& effect)
 	{
 		Material::Initialize(effect);
 

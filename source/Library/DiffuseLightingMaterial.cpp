@@ -21,7 +21,7 @@ namespace Rendering
 		MATERIAL_VARIABLE_DEFINITION(DiffuseLightingMaterial, LightDirection)
 		MATERIAL_VARIABLE_DEFINITION(DiffuseLightingMaterial, ColorTexture)
 
-		void DiffuseLightingMaterial::Initialize(Effect* effect)
+		void DiffuseLightingMaterial::Initialize(Effect& effect)
 	{
 		Material::Initialize(effect);
 

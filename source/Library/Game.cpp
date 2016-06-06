@@ -398,4 +398,16 @@ namespace Library
 
 		return center;
 	}
+
+	void Game::ResetRenderTargets()
+	{
+		mDirect3DDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+	}
+
+	void Game::UnbindPixelShaderResources(UINT startSlot, UINT count)
+	{
+		static ID3D11ShaderResourceView* emptySRV = nullptr;
+
+		mDirect3DDeviceContext->PSSetShaderResources(startSlot, count, &emptySRV);
+	}
 }

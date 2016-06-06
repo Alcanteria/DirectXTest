@@ -119,6 +119,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   <ItemGroup>
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="ColorFilterMaterial.cpp" />
     <ClCompile Include="ColorHelper.cpp" />
     <ClCompile Include="DiffuseLightingMaterial.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
@@ -126,6 +127,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="FirstPersonCamera.cpp" />
     <ClCompile Include="FpsComponent.cpp" />
+    <ClCompile Include="FullScreenQuad.cpp" />
+    <ClCompile Include="FullScreenRenderTarget.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameClock.cpp" />
     <ClCompile Include="GameComponent.cpp" />
@@ -143,6 +146,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="Pass.cpp" />
     <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="PointLightMaterial.cpp" />
+    <ClCompile Include="PostProcessingMaterial.cpp" />
     <ClCompile Include="ProxyModel.cpp" />
     <ClCompile Include="RasterizerStates.cpp" />
     <ClCompile Include="RenderStateHelper.cpp" />
@@ -162,6 +166,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
   <ItemGroup>
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="ColorFilterMaterial.h" />
     <ClInclude Include="ColorHelper.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="DiffuseLightingMaterial.h" />
@@ -170,6 +175,8 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="Effect.h" />
     <ClInclude Include="FirstPersonCamera.h" />
     <ClInclude Include="FpsComponent.h" />
+    <ClInclude Include="FullScreenQuad.h" />
+    <ClInclude Include="FullScreenRenderTarget.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameClock.h" />
     <ClInclude Include="GameComponent.h" />
@@ -187,6 +194,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="Pass.h" />
     <ClInclude Include="PointLight.h" />
     <ClInclude Include="PointLightMaterial.h" />
+    <ClInclude Include="PostProcessingMaterial.h" />
     <ClInclude Include="ProxyModel.h" />
     <ClInclude Include="RasterizerStates.h" />
     <ClInclude Include="RenderStateHelper.h" />
@@ -202,6 +210,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="Utility.h" />
     <ClInclude Include="Variable.h" />
     <ClInclude Include="VectorHelper.h" />
+    <ClInclude Include="VertexDeclarations.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Arial_14_Regular.spritefont">
@@ -212,6 +221,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <FxCompile Include="..\..\..\..\..\Downloads\DirectXBookReDownload\pvarcholik-real-time-3d-rendering-with-directx-and-hlsl-45f0eb8e850c\Chapter7\Visual Studio\source\SpotLightDemo\content\Effects\SpotLight.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />
+    <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter18\source\ColorFilteringDemo\content\Effects\ColorFilter.fx" />
     <FxCompile Include="Content\BasicEffect.fx" />
     <FxCompile Include="Content\Skybox.fx" />
     <FxCompile Include="Content\TextureMapping.fx" />

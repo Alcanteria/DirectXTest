@@ -15,7 +15,7 @@ namespace Library
 	MATERIAL_VARIABLE_DEFINITION(SkyboxMaterial, WorldViewProjection)
 	MATERIAL_VARIABLE_DEFINITION(SkyboxMaterial, SkyboxTexture)
 
-	void SkyboxMaterial::Initialize(Effect* effect)
+	void SkyboxMaterial::Initialize(Effect& effect)
 	{
 		Material::Initialize(effect);
 

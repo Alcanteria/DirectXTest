@@ -27,7 +27,7 @@ namespace Rendering
 		MATERIAL_VARIABLE_DEFINITION(PointLightMaterial, CameraPosition)
 		MATERIAL_VARIABLE_DEFINITION(PointLightMaterial, ColorTexture)
 
-		void PointLightMaterial::Initialize(Effect* effect)
+		void PointLightMaterial::Initialize(Effect& effect)
 	{
 		Material::Initialize(effect);
 

@@ -23,8 +23,9 @@ namespace Rendering
 {
 	const XMVECTORF32 RenderingGame::BackgroundColor = ColorHelper::CornflowerBlue;
 
-	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand) 
-		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mGrid(nullptr), mSpotLightDemo(nullptr)
+	RenderingGame::RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
+		: Game(instance, windowClass, windowTitle, showCommand), mFpsComponent(nullptr), mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mGrid(nullptr), mSpotLightDemo(nullptr),
+		mRenderTarget(nullptr), mFullScreenQuad(nullptr), mColorFilterEffect(nullptr), mColorFilterMaterial(nullptr), mSkyBox(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultisamplingEnabled = true;
@@ -61,6 +62,9 @@ namespace Rendering
 		mGrid = new Grid(*this, *mCamera);
 		mComponents.push_back(mGrid);
 
+		mSkyBox = new Skybox(*this, *mCamera, L"..\\source\\Library\\Content\\Textures\\BaconTextureCube.dds", 100.0f);
+		mComponents.push_back(mSkyBox);
+
 		RasterizerStates::Initialize(mDirect3DDevice);
 		SamplerStates::BorderColor = ColorHelper::Black;
 		SamplerStates::Initialize(mDirect3DDevice);
@@ -70,6 +74,21 @@ namespace Rendering
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
+		/* POST PROCESSING STUFF */
+		mRenderTarget = new FullScreenRenderTarget(*this);
+		SetCurrentDirectory(Utility::ExecutableDirectory().c_str());
+		mColorFilterEffect = new Effect(*this);
+		mColorFilterEffect->LoadCompiledEffect(L"Content\\Effects\\ColorFilter.cso");
+
+		mColorFilterMaterial = new ColorFilterMaterial();
+		mColorFilterMaterial->Initialize(*mColorFilterEffect);
+
+		mFullScreenQuad = new FullScreenQuad(*this, *mColorFilterMaterial);
+		mFullScreenQuad->Initialize();
+		mFullScreenQuad->SetActiveTechnique("grayscale_filter", "p0");
+		mFullScreenQuad->SetCustomUpdateMaterial(std::bind(&RenderingGame::UpdateColorFilterMaterial, this));
+		/* POST PROCESSING STUFF */
+
 		Game::Initialize();
 
 		mCamera->SetPosition(0.0f, 0.0f, 25.0f);
@@ -78,7 +97,16 @@ namespace Rendering
 	void RenderingGame::Shutdown()
 	{
 		DeleteObject(mSpotLightDemo);
+
+		/* POST PROCESSING STUFF */
+		DeleteObject(mRenderTarget);
+		DeleteObject(mFullScreenQuad);
+		DeleteObject(mColorFilterEffect);
+		DeleteObject(mColorFilterMaterial);
+		/* POST PROCESSING STUFF */
+
 		DeleteObject(mGrid)
+		DeleteObject(mSkyBox)
 		DeleteObject(mRenderStateHelper);
 		DeleteObject(mKeyboard);
 		DeleteObject(mMouse);
@@ -106,7 +134,34 @@ namespace Rendering
 
 	void RenderingGame::Draw(const GameTime &gameTime)
 	{
+
+		/*POST PROCESSING VERSION*/
+
+		mRenderTarget->Begin();
+
+		mDirect3DDeviceContext->ClearRenderTargetView(mRenderTarget->RenderTargetView(), reinterpret_cast<const float*>(&BackgroundColor));
+		mDirect3DDeviceContext->ClearDepthStencilView(mRenderTarget->DepthStencilView(), D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		Game::Draw(gameTime);
+
+		mRenderTarget->End();
+
 		mDirect3DDeviceContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&BackgroundColor));
+		mDirect3DDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
+
+		mFullScreenQuad->Draw(gameTime);
+
+		HRESULT hr = mSwapChain->Present(0, 0);
+
+		if (FAILED(hr))
+		{
+			throw GameException("IDXGISwapChain::Present() failed.", hr);
+		}
+
+		/*POST PROCESSING VERSION*/
+
+
+		/*mDirect3DDeviceContext->ClearRenderTargetView(mRenderTargetView, reinterpret_cast<const float*>(&BackgroundColor));
 		mDirect3DDeviceContext->ClearDepthStencilView(mDepthStencilView, D3D11_CLEAR_DEPTH | D3D11_CLEAR_STENCIL, 1.0f, 0);
 
 		Game::Draw(gameTime);
@@ -120,6 +175,11 @@ namespace Rendering
 		if (FAILED(hr))
 		{
 			throw GameException("IDXGISwapChain::Present() failed.", hr);
-		}
+		}*/
+	}
+
+	void RenderingGame::UpdateColorFilterMaterial()
+	{
+		mColorFilterMaterial->ColorTexture() << mRenderTarget->OutputTexture();
 	}
 }

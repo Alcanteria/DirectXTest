@@ -38,7 +38,7 @@ namespace Rendering
 	MATERIAL_VARIABLE_DEFINITION(SpotLightMaterial, CameraPosition)
 	MATERIAL_VARIABLE_DEFINITION(SpotLightMaterial, ColorTexture)
 
-	void SpotLightMaterial::Initialize(Effect* effect)
+	void SpotLightMaterial::Initialize(Effect& effect)
 	{
 		Material::Initialize(effect);
 

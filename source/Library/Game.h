@@ -17,6 +17,7 @@ namespace Library
 	public:
 		Game(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand);
 		virtual ~Game();
+
 		HINSTANCE Instance() const;
 		HWND WindowHandle() const;
 		const WNDCLASSEX& Window() const;
@@ -25,6 +26,7 @@ namespace Library
 		int ScreenWidth() const;
 		int ScreenHeight() const;
 		float AspectRatio() const;
+
 		virtual void Run();
 		virtual void Exit();
 		virtual void Initialize();
@@ -40,6 +42,9 @@ namespace Library
 
 		const std::vector<GameComponent*>& Components() const;
 		const ServiceContainer& Services() const;
+
+		virtual void ResetRenderTargets();
+		virtual void UnbindPixelShaderResources(UINT startSlot, UINT count);
 
 	protected:
 		virtual void InitializeWindow();

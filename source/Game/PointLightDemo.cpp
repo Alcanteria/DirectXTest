@@ -62,7 +62,7 @@ namespace Rendering
 		mEffect->LoadCompiledEffect(L"Content\\Effects\\PointLight.cso");
 
 		mMaterial = new PointLightMaterial();
-		mMaterial->Initialize(mEffect);
+		mMaterial->Initialize(*mEffect);
 
 		Mesh* mesh = model->Meshes().at(0);
 		mMaterial->CreateVertexBuffer(mGame->Direct3DDevice(), *mesh, &mVertexBuffer);

@@ -37,7 +37,7 @@ namespace Rendering
 	public:
 		PointLightMaterial();
 
-		virtual void Initialize(Effect* effect) override;
+		virtual void Initialize(Effect& effect) override;
 		virtual void CreateVertexBuffer(ID3D11Device* device, const Mesh& mesh, ID3D11Buffer** vertexBuffer) const override;
 		void CreateVertexBuffer(ID3D11Device* device, PointLightMaterialVertex* vertices, UINT vertexCount, ID3D11Buffer** vertexBuffer) const;
 		virtual UINT VertexSize() const override;

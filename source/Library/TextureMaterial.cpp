@@ -16,7 +16,7 @@ namespace Library
 
 	MATERIAL_VARIABLE_DEFINITION(TextureMaterial, WorldViewProjection)
 
-	void TextureMaterial::Initialize(Effect* effect)
+	void TextureMaterial::Initialize(Effect& effect)
 	{
 		Material::Initialize(effect);
 

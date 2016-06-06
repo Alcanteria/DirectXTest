@@ -9,9 +9,9 @@ namespace Library
 {
 	RTTI_DEFINITIONS(FirstPersonCamera)
 
-	const float FirstPersonCamera::DefaultRotationRate = XMConvertToRadians(0.01f);
-	const float FirstPersonCamera::DefaultMovementRate = 0.5f;
-	const float FirstPersonCamera::DefaultMouseSensitivity = 2.0f;
+	const float FirstPersonCamera::DefaultRotationRate = XMConvertToRadians(0.05f);
+	const float FirstPersonCamera::DefaultMovementRate = 1.0f;
+	const float FirstPersonCamera::DefaultMouseSensitivity = 1.3f;
 
 	FirstPersonCamera::FirstPersonCamera(Game& game)
 		: Camera(game), mKeyboard(nullptr), mMouse(nullptr),
@@ -78,7 +78,8 @@ namespace Library
 
 	void FirstPersonCamera::Update(const GameTime& gameTime)
 	{
-		XMFLOAT2 movementAmount = Vector2Helper::Zero;
+		//XMFLOAT2 movementAmount = Vector2Helper::Zero;
+		XMFLOAT3 movementAmount = Vector3Helper::Zero;
 		if (mKeyboard != nullptr)
 		{
 			if (mKeyboard->IsKeyDown(DIK_W))
@@ -100,6 +101,14 @@ namespace Library
 			{
 				movementAmount.x = 0.01f;
 			}
+			if (mKeyboard->IsKeyDown(DIK_SPACE))
+			{
+				movementAmount.z = 0.01f;
+			}
+			if (mKeyboard->IsKeyDown(DIK_LCONTROL))
+			{
+				movementAmount.z = -0.01f;
+			}
 		}
 
 		XMFLOAT2 rotationAmount = Vector2Helper::Zero;
@@ -114,19 +123,25 @@ namespace Library
 		XMVECTOR rotationVector = XMLoadFloat2(&rotationAmount) * mRotationRate * elapsedTime;
 		XMVECTOR right = XMLoadFloat3(&mRight);
 
+		XMVECTOR up = XMLoadFloat3(&mUp);
+
 		XMMATRIX pitchMatrix = XMMatrixRotationAxis(right, XMVectorGetY(rotationVector));
 		XMMATRIX yawMatrix = XMMatrixRotationY(XMVectorGetX(rotationVector));
 
 		ApplyRotation(XMMatrixMultiply(pitchMatrix, yawMatrix));
 
 		XMVECTOR position = XMLoadFloat3(&mPosition);
-		XMVECTOR movement = XMLoadFloat2(&movementAmount) * mMovementRate * elapsedTime;
+		//XMVECTOR movement = XMLoadFloat2(&movementAmount) * mMovementRate * elapsedTime;
+		XMVECTOR movement = XMLoadFloat3(&movementAmount) * mMovementRate * elapsedTime;
 
 		XMVECTOR strafe = right * XMVectorGetX(movement);
 		position += strafe;
 
 		XMVECTOR forward = XMLoadFloat3(&mDirection) * XMVectorGetY(movement);
 		position += forward;
+
+		XMVECTOR vertical = up * XMVectorGetZ(movement);
+		position += vertical;
 
 		XMStoreFloat3(&mPosition, position);
 
