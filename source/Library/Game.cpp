@@ -1,46 +1,31 @@
 #include "Game.h"
-#include "GameException.h"
 #include "DrawableGameComponent.h"
+#include "GameException.h"
 
 namespace Library
 {
-	// Tutorial says to put this here, but it generates an error because these are declared in the header.
-	//const UINT Game::DefaultScreenHeight = 1024;
-	//const UINT Game::DefaultScreenHeight = 768;
+	RTTI_DEFINITIONS(Game)
 
+	const UINT Game::DefaultScreenWidth = 1024;
+	const UINT Game::DefaultScreenHeight = 768;
 	const UINT Game::DefaultFrameRate = 60;
 	const UINT Game::DefaultMultiSamplingCount = 4;
 
-	Game::Game(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand) :
-		mInstance(instance), 
-		mWindowClass(windowClass), 
-		mWindowTitle(windowTitle), 
-		mShowCommand(showCommand), 
-		mWindowHandle(), mWindow(), 
-		mScreenWidth(DefaultScreenWidth), 
-		mScreenHeight(DefaultScreenHeight), 
+	Game::Game(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand)
+		: RenderTarget(), mInstance(instance), mWindowClass(windowClass), mWindowTitle(windowTitle), mShowCommand(showCommand),
+		mWindowHandle(), mWindow(),
+		mScreenWidth(DefaultScreenWidth), mScreenHeight(DefaultScreenHeight),
 		mGameClock(), mGameTime(),
-		mFeatureLevel(D3D_FEATURE_LEVEL_9_1),
-		mDirect3DDevice(nullptr),
-		mDirect3DDeviceContext(nullptr),
-		mSwapChain(nullptr),
-		mFrameRate(DefaultFrameRate),
-		mIsFullScreen(false),
-		mDepthStencilBufferEnabled(false),
-		mMultisamplingEnabled(false),
-		mMultisamplingCount(DefaultMultiSamplingCount),
-		mMultisamplingQualityLevels(0),
-		mDepthStencilBuffer(nullptr),
-		mRenderTargetView(nullptr),
-		mDepthStencilView(nullptr),
-		mViewport()
+		mFeatureLevel(D3D_FEATURE_LEVEL_9_1), mDirect3DDevice(nullptr), mDirect3DDeviceContext(nullptr), mSwapChain(nullptr),
+		mFrameRate(DefaultFrameRate), mIsFullScreen(false),
+		mDepthStencilBufferEnabled(false), mMultiSamplingEnabled(false), mMultiSamplingCount(DefaultMultiSamplingCount), mMultiSamplingQualityLevels(0),
+		mDepthStencilBuffer(nullptr), mRenderTargetView(nullptr), mDepthStencilView(nullptr), mViewport(),
+		mComponents(), mServices()
 	{
-
 	}
 
 	Game::~Game()
 	{
-
 	}
 
 	HINSTANCE Game::Instance() const
@@ -88,6 +73,21 @@ namespace Library
 		return mDirect3DDeviceContext;
 	}
 
+	bool Game::DepthStencilBufferEnabled() const
+	{
+		return mDepthStencilBufferEnabled;
+	}
+
+	ID3D11RenderTargetView* Game::RenderTargetView() const
+	{
+		return mRenderTargetView;
+	}
+
+	ID3D11DepthStencilView* Game::DepthStencilView() const
+	{
+		return mDepthStencilView;
+	}
+
 	float Game::AspectRatio() const
 	{
 		return static_cast<float>(mScreenWidth) / mScreenHeight;
@@ -108,6 +108,26 @@ namespace Library
 		return mViewport;
 	}
 
+	bool Game::MultiSamplingEnabled() const
+	{
+		return mMultiSamplingEnabled;
+	}
+
+	UINT Game::MultiSamplingCount() const
+	{
+		return mMultiSamplingCount;
+	}
+
+	UINT Game::MultiSamplingQualityLevels() const
+	{
+		return mMultiSamplingQualityLevels;
+	}
+
+	const std::vector<GameComponent*>& Game::Components() const
+	{
+		return mComponents;
+	}
+
 	const ServiceContainer& Game::Services() const
 	{
 		return mServices;
@@ -118,8 +138,10 @@ namespace Library
 		InitializeWindow();
 		InitializeDirectX();
 		Initialize();
+
 		MSG message;
 		ZeroMemory(&message, sizeof(message));
+
 		mGameClock.Reset();
 
 		while (message.message != WM_QUIT)
@@ -143,6 +165,24 @@ namespace Library
 	void Game::Exit()
 	{
 		PostQuitMessage(0);
+	}
+
+	void Game::Shutdown()
+	{
+		ReleaseObject(mRenderTargetView);
+		ReleaseObject(mDepthStencilView);
+		ReleaseObject(mSwapChain);
+		ReleaseObject(mDepthStencilBuffer);
+
+		if (mDirect3DDeviceContext != nullptr)
+		{
+			mDirect3DDeviceContext->ClearState();
+		}
+
+		ReleaseObject(mDirect3DDeviceContext);
+		ReleaseObject(mDirect3DDevice);
+
+		UnregisterClass(mWindowClass.c_str(), mWindow.hInstance);
 	}
 
 	void Game::Initialize()
@@ -169,12 +209,33 @@ namespace Library
 		for (GameComponent* component : mComponents)
 		{
 			DrawableGameComponent* drawableGameComponent = component->As<DrawableGameComponent>();
-
 			if (drawableGameComponent != nullptr && drawableGameComponent->Visible())
 			{
 				drawableGameComponent->Draw(gameTime);
 			}
 		}
+	}
+
+	void Game::ResetRenderTargets()
+	{
+		mDirect3DDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
+	}
+
+	void Game::UnbindPixelShaderResources(UINT startSlot, UINT count)
+	{
+		static ID3D11ShaderResourceView* emptySRV = nullptr;
+
+		mDirect3DDeviceContext->PSSetShaderResources(startSlot, count, &emptySRV);
+	}
+
+	void Game::Begin()
+	{
+		RenderTarget::Begin(mDirect3DDeviceContext, 1, &mRenderTargetView, mDepthStencilView, mViewport);
+	}
+
+	void Game::End()
+	{
+		RenderTarget::End(mDirect3DDeviceContext);
 	}
 
 	void Game::InitializeWindow()
@@ -192,9 +253,11 @@ namespace Library
 
 		RECT windowRectangle = { 0, 0, mScreenWidth, mScreenHeight };
 		AdjustWindowRect(&windowRectangle, WS_OVERLAPPEDWINDOW, FALSE);
+
 		RegisterClassEx(&mWindow);
 		POINT center = CenterWindow(mScreenWidth, mScreenHeight);
 		mWindowHandle = CreateWindow(mWindowClass.c_str(), mWindowTitle.c_str(), WS_OVERLAPPEDWINDOW, center.x, center.y, windowRectangle.right - windowRectangle.left, windowRectangle.bottom - windowRectangle.top, nullptr, nullptr, mInstance, nullptr);
+
 		ShowWindow(mWindowHandle, mShowCommand);
 		UpdateWindow(mWindowHandle);
 	}
@@ -204,14 +267,18 @@ namespace Library
 		HRESULT hr;
 		UINT createDeviceFlags = 0;
 
-		#if defined(DEBUG) || defined(_DEBUG)
-				createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
-		#endif
+#if defined(DEBUG) || defined(_DEBUG)  
+		createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
-		D3D_FEATURE_LEVEL featureLevels[] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_1, D3D_FEATURE_LEVEL_10_0 };
+		D3D_FEATURE_LEVEL featureLevels[] = {
+			D3D_FEATURE_LEVEL_11_0,
+			D3D_FEATURE_LEVEL_10_1,
+			D3D_FEATURE_LEVEL_10_0
+		};
+
 		ID3D11Device* direct3DDevice = nullptr;
 		ID3D11DeviceContext* direct3DDeviceContext = nullptr;
-
 		if (FAILED(hr = D3D11CreateDevice(NULL, D3D_DRIVER_TYPE_HARDWARE, NULL, createDeviceFlags, featureLevels, ARRAYSIZE(featureLevels), D3D11_SDK_VERSION, &direct3DDevice, &mFeatureLevel, &direct3DDeviceContext)))
 		{
 			throw GameException("D3D11CreateDevice() failed", hr);
@@ -224,14 +291,14 @@ namespace Library
 
 		if (FAILED(hr = direct3DDeviceContext->QueryInterface(__uuidof(ID3D11DeviceContext1), reinterpret_cast<void**>(&mDirect3DDeviceContext))))
 		{
-			throw GameException("ID3D11DeviceContext::QueryInterface() failed.", hr);
+			throw GameException("ID3D11Device::QueryInterface() failed", hr);
 		}
 
 		ReleaseObject(direct3DDevice);
 		ReleaseObject(direct3DDeviceContext);
-		mDirect3DDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, mMultisamplingCount, &mMultisamplingQualityLevels);
 
-		if (mMultisamplingQualityLevels == 0)
+		mDirect3DDevice->CheckMultisampleQualityLevels(DXGI_FORMAT_R8G8B8A8_UNORM, mMultiSamplingCount, &mMultiSamplingQualityLevels);
+		if (mMultiSamplingQualityLevels == 0)
 		{
 			throw GameException("Unsupported multi-sampling quality");
 		}
@@ -242,10 +309,10 @@ namespace Library
 		swapChainDesc.Height = mScreenHeight;
 		swapChainDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
-		if (mMultisamplingEnabled)
+		if (mMultiSamplingEnabled)
 		{
-			swapChainDesc.SampleDesc.Count = mMultisamplingCount;
-			swapChainDesc.SampleDesc.Quality = mMultisamplingQualityLevels - 1;
+			swapChainDesc.SampleDesc.Count = mMultiSamplingCount;
+			swapChainDesc.SampleDesc.Quality = mMultiSamplingQualityLevels - 1;
 		}
 		else
 		{
@@ -256,15 +323,14 @@ namespace Library
 		swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
 		swapChainDesc.BufferCount = 1;
 		swapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-		IDXGIDevice* dxgiDevice = nullptr;
 
+		IDXGIDevice* dxgiDevice = nullptr;
 		if (FAILED(hr = mDirect3DDevice->QueryInterface(__uuidof(IDXGIDevice), reinterpret_cast<void**>(&dxgiDevice))))
 		{
-			throw GameException("ID3D11Device::QueryInterface() failed.", hr);
+			throw GameException("ID3D11Device::QueryInterface() failed", hr);
 		}
 
-		IDXGIAdapter* dxgiAdapter = nullptr;
-
+		IDXGIAdapter *dxgiAdapter = nullptr;
 		if (FAILED(hr = dxgiDevice->GetParent(__uuidof(IDXGIAdapter), reinterpret_cast<void**>(&dxgiAdapter))))
 		{
 			ReleaseObject(dxgiDevice);
@@ -272,7 +338,6 @@ namespace Library
 		}
 
 		IDXGIFactory2* dxgiFactory = nullptr;
-
 		if (FAILED(hr = dxgiAdapter->GetParent(__uuidof(IDXGIFactory2), reinterpret_cast<void**>(&dxgiFactory))))
 		{
 			ReleaseObject(dxgiDevice);
@@ -297,8 +362,8 @@ namespace Library
 		ReleaseObject(dxgiDevice);
 		ReleaseObject(dxgiAdapter);
 		ReleaseObject(dxgiFactory);
-		ID3D11Texture2D* backBuffer;
 
+		ID3D11Texture2D* backBuffer;
 		if (FAILED(hr = mSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), reinterpret_cast<void**>(&backBuffer))))
 		{
 			throw GameException("IDXGISwapChain::GetBuffer() failed.", hr);
@@ -326,10 +391,10 @@ namespace Library
 			depthStencilDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
 			depthStencilDesc.Usage = D3D11_USAGE_DEFAULT;
 
-			if (mMultisamplingEnabled)
+			if (mMultiSamplingEnabled)
 			{
-				depthStencilDesc.SampleDesc.Count = mMultisamplingCount;
-				depthStencilDesc.SampleDesc.Quality = mMultisamplingQualityLevels - 1;
+				depthStencilDesc.SampleDesc.Count = mMultiSamplingCount;
+				depthStencilDesc.SampleDesc.Quality = mMultiSamplingQualityLevels - 1;
 			}
 			else
 			{
@@ -346,34 +411,17 @@ namespace Library
 			{
 				throw GameException("IDXGIDevice::CreateDepthStencilView() failed.", hr);
 			}
-
-			mDirect3DDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
-			mViewport.TopLeftX = 0.0f;
-			mViewport.TopLeftY = 0.0f;
-			mViewport.Width = static_cast<float>(mScreenWidth);
-			mViewport.Height = static_cast<float>(mScreenHeight);
-			mViewport.MinDepth = 0.0f;
-			mViewport.MaxDepth = 1.0f;
-			mDirect3DDeviceContext->RSSetViewports(1, &mViewport);
-		}
-	}
-
-	void Game::Shutdown()
-	{
-		ReleaseObject(mRenderTargetView);
-		ReleaseObject(mDepthStencilView);
-		ReleaseObject(mSwapChain);
-		ReleaseObject(mDepthStencilBuffer);
-
-		if (mDirect3DDeviceContext != nullptr)
-		{
-			mDirect3DDeviceContext->ClearState();
 		}
 
-		ReleaseObject(mDirect3DDeviceContext);
-		ReleaseObject(mDirect3DDevice);
+		mViewport.TopLeftX = 0.0f;
+		mViewport.TopLeftY = 0.0f;
+		mViewport.Width = static_cast<float>(mScreenWidth);
+		mViewport.Height = static_cast<float>(mScreenHeight);
+		mViewport.MinDepth = 0.0f;
+		mViewport.MaxDepth = 1.0f;
 
-		UnregisterClass(mWindowClass.c_str(), mWindow.hInstance);
+		// Set render targets and viewport through render target stack	
+		Begin();
 	}
 
 	LRESULT WINAPI Game::WndProc(HWND windowHandle, UINT message, WPARAM wParam, LPARAM lParam)
@@ -392,22 +440,11 @@ namespace Library
 	{
 		int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 		int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+
 		POINT center;
 		center.x = (screenWidth - windowWidth) / 2;
 		center.y = (screenHeight - windowHeight) / 2;
 
 		return center;
-	}
-
-	void Game::ResetRenderTargets()
-	{
-		mDirect3DDeviceContext->OMSetRenderTargets(1, &mRenderTargetView, mDepthStencilView);
-	}
-
-	void Game::UnbindPixelShaderResources(UINT startSlot, UINT count)
-	{
-		static ID3D11ShaderResourceView* emptySRV = nullptr;
-
-		mDirect3DDeviceContext->PSSetShaderResources(startSlot, count, &emptySRV);
 	}
 }

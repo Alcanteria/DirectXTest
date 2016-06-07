@@ -14,17 +14,25 @@ namespace Library
 	class RenderStateHelper;
 	class Skybox;
 	class Grid;
+	class FullScreenRenderTarget;
+	class Bloom;
+}
+
+namespace DirectX
+{
+	class SpriteBatch;
+	class SpriteFont;
 }
 
 namespace Rendering
 {
-	class ShadowMappingDemo;
+	class PointLightDemo;
 
-	class RenderingGame : public Game
+	class BloomGame : public Game
 	{
 	public:
-		RenderingGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand);
-		~RenderingGame();
+		BloomGame(HINSTANCE instance, const std::wstring& windowClass, const std::wstring& windowTitle, int showCommand);
+		~BloomGame();
 
 		virtual void Initialize() override;
 		virtual void Update(const GameTime& gameTime) override;
@@ -34,6 +42,9 @@ namespace Rendering
 		virtual void Shutdown() override;
 
 	private:
+		void UpdateBloomSettings(const GameTime& gameTime);
+
+		static const float BloomModulationRate;
 		static const XMVECTORF32 BackgroundColor;
 
 		LPDIRECTINPUT8 mDirectInput;
@@ -45,6 +56,13 @@ namespace Rendering
 		Skybox* mSkybox;
 		Grid* mGrid;
 
-		ShadowMappingDemo* mShadowMappingDemo;
+		PointLightDemo* mPointLightDemo;
+		FullScreenRenderTarget* mFullScreenRenderTarget;
+		Bloom* mBloom;
+		bool mBloomEnabled;
+
+		SpriteBatch* mSpriteBatch;
+		SpriteFont* mSpriteFont;
+		XMFLOAT2 mTextPosition;
 	};
 }

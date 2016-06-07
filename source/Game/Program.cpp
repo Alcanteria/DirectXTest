@@ -23,10 +23,10 @@ int WINAPI WinMain(HINSTANCE instance, HINSTANCE previousInstance, LPSTR command
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	//std::unique_ptr<RenderingGame>game(new RenderingGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
+	std::unique_ptr<RenderingGame>game(new RenderingGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
 	//std::unique_ptr<GaussianBlurGame>game(new GaussianBlurGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
 	//std::unique_ptr<DistortionMappingGame>game(new DistortionMappingGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
-	std::unique_ptr<DistortionMappingPostGame>game(new DistortionMappingPostGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
+	//std::unique_ptr<DistortionMappingPostGame>game(new DistortionMappingPostGame(instance, L"RenderingClass", L"Real-Time 3D Rendering", showCommand));
 
 	try
 	{

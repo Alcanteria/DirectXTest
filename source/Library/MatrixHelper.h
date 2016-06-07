@@ -8,6 +8,7 @@ namespace Library
 	{
 	public:
 		static const XMFLOAT4X4 Identity;
+		static const XMFLOAT4X4 Zero;
 
 		static void GetForward(CXMMATRIX matrix, XMFLOAT3 &vector);
 		static void GetUp(CXMMATRIX matrix, XMFLOAT3 &vector);

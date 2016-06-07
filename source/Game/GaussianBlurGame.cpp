@@ -36,7 +36,7 @@ namespace Rendering
 		mSpriteBatch(nullptr), mSpriteFont(nullptr), mTextPosition(0.0f, 40.0f)
 	{
 		mDepthStencilBufferEnabled = true;
-		mMultisamplingEnabled = true;
+		mMultiSamplingEnabled = true;
 	}
 
 	GaussianBlurGame::~GaussianBlurGame()

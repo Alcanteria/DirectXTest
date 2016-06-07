@@ -69,6 +69,12 @@
     <ClInclude Include="DistortionMappingPostGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ProjectiveTextureMappingDepthMapDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShadowMappingDemo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -117,6 +123,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DistortionMappingPostGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectiveTextureMappingDepthMapDemo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShadowMappingDemo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
