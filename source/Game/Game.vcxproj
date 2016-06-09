@@ -88,6 +88,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationDemo.h" />
     <ClInclude Include="BloomGame.h" />
     <ClInclude Include="CubeDemo.h" />
     <ClInclude Include="DiffuseLightingDemo.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="TriangleDemo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationDemo.cpp" />
     <ClCompile Include="BloomGame.cpp" />
     <ClCompile Include="CubeDemo.cpp" />
     <ClCompile Include="DiffuseLightingDemo.cpp" />

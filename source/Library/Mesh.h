@@ -9,13 +9,13 @@ namespace Library
 {
 	class Material;
 	class ModelMaterial;
+	class BoneVertexWeights;
 
 	class Mesh
 	{
 		friend class Model;
 
 	public:
-		Mesh(Model& model, ModelMaterial* material);
 		~Mesh();
 
 		Model& GetModel();
@@ -30,6 +30,7 @@ namespace Library
 		const std::vector<std::vector<XMFLOAT4>*>& VertexColors() const;
 		UINT FaceCount() const;
 		const std::vector<UINT>& Indices() const;
+		const std::vector<BoneVertexWeights>& BoneWeights() const;
 
 		BufferContainer& VertexBuffer();
 		BufferContainer& IndexBuffer();
@@ -41,7 +42,7 @@ namespace Library
 		void CreateCachedVertexAndIndexBuffers(ID3D11Device& device, const Material& material);
 
 	private:
-		Mesh(Model& model, ModelMaterial* material, aiMesh* mesh);
+		Mesh(Model& model, aiMesh& mesh);
 		Mesh(const Mesh& rhs);
 		Mesh& operator=(const Mesh& rhs);
 
@@ -56,6 +57,7 @@ namespace Library
 		std::vector<std::vector<XMFLOAT4>*> mVertexColors;
 		UINT mFaceCount;
 		std::vector<UINT> mIndices;
+		std::vector<BoneVertexWeights> mBoneWeights;
 
 		BufferContainer mVertexBuffer;
 		BufferContainer mIndexBuffer;

@@ -117,9 +117,13 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AnimationClip.cpp" />
+    <ClCompile Include="AnimationPlayer.cpp" />
     <ClCompile Include="BasicMaterial.cpp" />
     <ClCompile Include="Bloom.cpp" />
     <ClCompile Include="BloomMaterial.cpp" />
+    <ClCompile Include="Bone.cpp" />
+    <ClCompile Include="BoneAnimation.cpp" />
     <ClCompile Include="BufferContainer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ColorFilterMaterial.cpp" />
@@ -147,6 +151,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="GaussianBlurMaterial.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Keyboard.cpp" />
+    <ClCompile Include="Keyframe.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="MatrixHelper.cpp" />
@@ -167,8 +172,10 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="RenderStateHelper.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="SamplerStates.cpp" />
+    <ClCompile Include="SceneNode.cpp" />
     <ClCompile Include="ServiceContainer.cpp" />
     <ClCompile Include="ShadowMappingMaterial.cpp" />
+    <ClCompile Include="SkinnedModelMaterial.cpp" />
     <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="SkyboxMaterial.cpp" />
     <ClCompile Include="Source.cpp" />
@@ -181,9 +188,13 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClCompile Include="VectorHelper.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AnimationClip.h" />
+    <ClInclude Include="AnimationPlayer.h" />
     <ClInclude Include="BasicMaterial.h" />
     <ClInclude Include="Bloom.h" />
     <ClInclude Include="BloomMaterial.h" />
+    <ClInclude Include="Bone.h" />
+    <ClInclude Include="BoneAnimation.h" />
     <ClInclude Include="BufferContainer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="ColorFilterMaterial.h" />
@@ -212,6 +223,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="GaussianBlurMaterial.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Keyboard.h" />
+    <ClInclude Include="Keyframe.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="MatrixHelper.h" />
@@ -233,8 +245,10 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="RTTI.h" />
     <ClInclude Include="SamplerStates.h" />
+    <ClInclude Include="SceneNode.h" />
     <ClInclude Include="ServiceContainer.h" />
     <ClInclude Include="ShadowMappingMaterial.h" />
+    <ClInclude Include="SkinnedModelMaterial.h" />
     <ClInclude Include="Skybox.h" />
     <ClInclude Include="SkyboxMaterial.h" />
     <ClInclude Include="SpotLight.h" />
@@ -252,6 +266,7 @@ copy $(TargetPath)" "$(SolutionDir)..\lib\"</Command>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="..\..\..\..\..\Downloads\DirectXBookReDownload\pvarcholik-real-time-3d-rendering-with-directx-and-hlsl-45f0eb8e850c\Chapter20\source\Library\content\Effects\SkinnedModel.fx" />
     <FxCompile Include="..\..\..\..\..\Downloads\DirectXBookReDownload\pvarcholik-real-time-3d-rendering-with-directx-and-hlsl-45f0eb8e850c\Chapter7\Visual Studio\source\SpotLightDemo\content\Effects\SpotLight.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\DiffuseLightingDemo\content\Effects\DiffuseLighting.fx" />
     <FxCompile Include="..\..\..\..\..\Dropbox\Direct X Stuff\RealTime 3D Rendering Source Code\Chapter17\source\PointLightDemo\content\Effects\PointLight.fx" />

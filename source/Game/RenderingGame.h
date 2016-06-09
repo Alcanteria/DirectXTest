@@ -18,7 +18,7 @@ namespace Library
 
 namespace Rendering
 {
-	class ShadowMappingDemo;
+	class AnimationDemo;
 
 	class RenderingGame : public Game
 	{
@@ -45,6 +45,6 @@ namespace Rendering
 		Skybox* mSkybox;
 		Grid* mGrid;
 
-		ShadowMappingDemo* mShadowMappingDemo;
+		AnimationDemo* mAnimationDemo;
 	};
 }

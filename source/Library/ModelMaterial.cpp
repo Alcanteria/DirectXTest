@@ -66,7 +66,7 @@ namespace Library
 		return mName;
 	}
 
-	const std::map<TextureType, std::vector<std::wstring>*> ModelMaterial::Textures() const
+	const std::map<TextureType, std::vector<std::wstring>*> &ModelMaterial::Textures() const
 	{
 		return mTextures;
 	}

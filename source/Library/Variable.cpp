@@ -119,4 +119,17 @@ namespace Library
 
 		return *this;
 	}
+
+	Variable& Variable::operator<<(const std::vector<XMFLOAT4X4>& values)
+	{
+		ID3DX11EffectMatrixVariable* variable = mVariable->AsMatrix();
+		if (variable->IsValid() == false)
+		{
+			throw GameException("Invalid effect variable cast.");
+		}
+
+		variable->SetMatrixArray(reinterpret_cast<const float*>(&values[0]), 0, values.size());
+
+		return *this;
+	}
 }

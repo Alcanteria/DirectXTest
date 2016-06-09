@@ -25,6 +25,7 @@ namespace Library
 		Variable& operator<<(float value);
 		Variable& operator<<(const std::vector<float>& values);
 		Variable& operator<<(const std::vector<XMFLOAT2>& values);
+		Variable& operator<<(const std::vector<XMFLOAT4X4>& values);
 
 	private:
 		Variable(const Variable& rhs);

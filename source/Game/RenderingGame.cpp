@@ -12,7 +12,7 @@
 #include "..\Library\Skybox.h"
 #include "..\Library\Grid.h"
 
-#include "ShadowMappingDemo.h"
+#include "AnimationDemo.h"
 
 namespace Rendering
 {
@@ -22,7 +22,7 @@ namespace Rendering
 		: Game(instance, windowClass, windowTitle, showCommand),
 		mFpsComponent(nullptr), mGrid(nullptr),
 		mDirectInput(nullptr), mKeyboard(nullptr), mMouse(nullptr), mRenderStateHelper(nullptr), mSkybox(nullptr),
-		mShadowMappingDemo(nullptr)
+		mAnimationDemo(nullptr)
 	{
 		mDepthStencilBufferEnabled = true;
 		mMultiSamplingEnabled = true;
@@ -64,8 +64,8 @@ namespace Rendering
 		SamplerStates::BorderColor = ColorHelper::Black;
 		SamplerStates::Initialize(mDirect3DDevice);
 
-		mShadowMappingDemo = new ShadowMappingDemo(*this, *mCamera);
-		mComponents.push_back(mShadowMappingDemo);
+		mAnimationDemo = new AnimationDemo(*this, *mCamera);
+		mComponents.push_back(mAnimationDemo);
 
 		mRenderStateHelper = new RenderStateHelper(*this);
 
@@ -76,7 +76,7 @@ namespace Rendering
 
 	void RenderingGame::Shutdown()
 	{
-		DeleteObject(mShadowMappingDemo);
+		DeleteObject(mAnimationDemo);
 		DeleteObject(mRenderStateHelper);
 		DeleteObject(mKeyboard);
 		DeleteObject(mMouse);
