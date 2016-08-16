@@ -10,8 +10,8 @@ namespace Library
 	RTTI_DEFINITIONS(FirstPersonCamera)
 
 	const float FirstPersonCamera::DefaultRotationRate = XMConvertToRadians(0.05f);
-	const float FirstPersonCamera::DefaultMovementRate = 1.0f;
-	const float FirstPersonCamera::DefaultMouseSensitivity = 1.3f;
+	const float FirstPersonCamera::DefaultMovementRate = 10.0f;
+	const float FirstPersonCamera::DefaultMouseSensitivity = 100.0f;
 
 	FirstPersonCamera::FirstPersonCamera(Game& game)
 		: Camera(game), mKeyboard(nullptr), mMouse(nullptr),
@@ -84,30 +84,30 @@ namespace Library
 		{
 			if (mKeyboard->IsKeyDown(DIK_W))
 			{
-				movementAmount.y = 0.01f;
+				movementAmount.y = 1.0f;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_S))
 			{
-				movementAmount.y = -0.01f;
+				movementAmount.y = -1.0f;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_A))
 			{
-				movementAmount.x = -0.01f;
+				movementAmount.x = -1.0f;
 			}
 
 			if (mKeyboard->IsKeyDown(DIK_D))
 			{
-				movementAmount.x = 0.01f;
+				movementAmount.x = 1.0f;
 			}
 			if (mKeyboard->IsKeyDown(DIK_SPACE))
 			{
-				movementAmount.z = 0.01f;
+				movementAmount.z = 1.0f;
 			}
 			if (mKeyboard->IsKeyDown(DIK_LCONTROL))
 			{
-				movementAmount.z = -0.01f;
+				movementAmount.z = -1.0f;
 			}
 		}
 

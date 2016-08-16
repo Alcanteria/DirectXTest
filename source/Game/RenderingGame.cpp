@@ -81,7 +81,7 @@ namespace Rendering
 		DeleteObject(mKeyboard);
 		DeleteObject(mMouse);
 		DeleteObject(mSkybox)
-			DeleteObject(mGrid);
+		DeleteObject(mGrid);
 		DeleteObject(mFpsComponent);
 		DeleteObject(mCamera);
 

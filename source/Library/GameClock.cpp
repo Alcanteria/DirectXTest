@@ -53,5 +53,7 @@ namespace Library
 		GetTime(mCurrentTime);
 		gameTime.SetTotalGameTime((mCurrentTime.QuadPart - mStartTime.QuadPart) / mFrequency);
 		gameTime.SetElapsedGameTime((mCurrentTime.QuadPart - mLastTime.QuadPart) / mFrequency);
+
+		mLastTime = mCurrentTime;
 	}
 }
